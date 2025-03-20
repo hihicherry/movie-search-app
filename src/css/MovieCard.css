@@ -103,6 +103,14 @@
   font-size: 0.9rem;
 }
 
+.movie-link {
+  color: #F8E7F6;
+}
+
+.movie-link:hover {
+  color: #f0bfea;
+}
+
 .user-rating {
   color: #ffd700;
   font-size: 0.9rem;

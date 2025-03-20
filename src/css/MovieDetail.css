@@ -1,0 +1,28 @@
+.movie-detail {
+    padding: 24px;
+}
+
+.movie-back {
+    background-color: #5A639C;
+    color: #FFF2F2;
+    margin-top: 8px;
+}
+
+.movie-title{
+    color: #5A639C;
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.movie-poster{
+    margin: 16px 0;
+    max-width: 100%;
+}
+
+.movie-content p {
+    margin-bottom: 8px;
+}
+
+.movie-content strong {
+    font-weight: bold;
+}

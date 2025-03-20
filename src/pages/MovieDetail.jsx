@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useMovieContext, MovieProvider } from "../contexts/MovieContext";
+import { useParams, useNavigate } from "react-router-dom";
+import { useMovieContext } from "../contexts/MovieContext";
+import "../css/MovieDetail.css";
+import { motion } from "framer-motion";
 
 const MovieDetail = () => {
     const {id} = useParams();
@@ -10,6 +12,8 @@ const MovieDetail = () => {
 	
     const { addToFavorites, removeFromFavorites, isFavorite } =
 			useMovieContext();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMovie = async() => {
@@ -33,21 +37,32 @@ const MovieDetail = () => {
     if (error) return <p>{error}</p>;
 
     return (
-		<div className="movie-detail">
+		<motion.div
+			className="movie-detail"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.5 }}
+		>
 			<h1 className="movie-title">{movie.title}</h1>
 			<img
+				className="movie-poster"
 				src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
 				alt={movie.title}
 			/>
-			<p>{movie.overview}</p>
-			<p>
-				<strong>Release Date: </strong>
-				{movie.release_date}
-			</p>
-			<p>
-				<strong>Rate: </strong> ⭐
-			 {movie.vote_average}</p>
-		</div>
+			<div className="movie-content">
+				<p>{movie.overview}</p>
+				<p>
+					<strong>Release Date: </strong>
+					{movie.release_date}
+				</p>
+				<p>
+					<strong>Rate: </strong> ⭐{movie.vote_average}
+				</p>
+			</div>
+			<button onClick={() => navigate(-1)} className="movie-back">
+				Back
+			</button>
+		</motion.div>
 	);
 
 };

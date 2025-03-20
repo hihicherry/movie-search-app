@@ -37,6 +37,7 @@
   font-weight: 500;
   transition: background-color 0.2s;
   white-space: nowrap;  
+  box-shadow: 0 3px 3px -2px #444444;
 }
 
 .search-btn:hover {

@@ -33,7 +33,7 @@ function MovieCard({movie}){
 				<h3>{movie.title}</h3>
 				<p>{movie.release_date}</p>
 				<Link className="movie-link" to={`/movie/${movie.id}`}>
-					more
+					more info
 				</Link>
 			</div>
 		</div>
