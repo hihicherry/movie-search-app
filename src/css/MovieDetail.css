@@ -2,27 +2,65 @@
     padding: 24px;
 }
 
-.movie-back {
-    background-color: #5A639C;
-    color: #FFF2F2;
-    margin-top: 8px;
-}
-
-.movie-title{
+.movie-detail-title{
     color: #5A639C;
     font-size: 1.875rem;
     font-weight: bold;
 }
 
-.movie-poster{
-    margin: 16px 0;
-    max-width: 100%;
+.movie-detail-poster{
+    margin: 1rem 0;
+    width: 100%;
 }
 
-.movie-content p {
-    margin-bottom: 8px;
+.movie-detail-castlist {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
 }
 
-.movie-content strong {
+.movie-detail-content {
+    flex: 1;
+    background-color: #7886C7;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.movie-detail-content p {
+    margin-bottom: 0.5rem;
+}
+
+.movie-detail-content strong {
     font-weight: bold;
+}
+
+.movie-detail-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.movie-detail-buttons button{
+    color: #FFF2F2;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.movie-detail-back {
+     background-color: #5A639C;
+}
+
+.movie-detail-favorite {
+    /*background-color: #d96b9e;*/
+    background-color: #FFB3B3;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.movie-detail-favorite:hover {
+    background-color: #e36868;
+}
+
+.movie-detail-favorite.active {
+    background-color: #f5c6c6;
 }

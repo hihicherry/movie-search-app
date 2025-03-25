@@ -7,7 +7,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 7px 7px -5px #68696b;
+  box-shadow: 0 7px 7px -5px #68696b;  
+}
+
+.movie-card.show{
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .movie-card:hover {
@@ -23,7 +28,6 @@
 .movie-poster img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .movie-overlay {

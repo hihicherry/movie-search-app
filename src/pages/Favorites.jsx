@@ -8,7 +8,7 @@ function Favorites() {
 	if (favorites.length !== 0) {
 		return (
 			<div className="favorites">
-				<h2>Your Favorites</h2>
+				<h2>我的最愛</h2>
 				<div className="movies-grid">
 					{favorites.map((movie) => (
 						<MovieCard movie={movie} key={movie.id} />
@@ -19,10 +19,9 @@ function Favorites() {
 	}else{
         return (
 			<div className="favorites-empty">
-				<h2>No Favorite Movies Yet</h2>
+				<h2>尚未新增任何作品至我的最愛</h2>
 				<p>
-					Start adding movies to your favorites and they will appear
-					here!
+					開始加入你喜愛的電影吧！
 				</p>
 			</div>
 		);

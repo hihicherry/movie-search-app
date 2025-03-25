@@ -4,11 +4,11 @@ import "../css/NavBar.css";
 function NavBar(){
     return <nav className="navbar">
         <div className="navbar-brand">
-            <Link className="navbar-name" to="/">Movie Search App</Link>
+            <Link className="navbar-name" to="/movie-search-app/">MovieSearch</Link>
         </div>
         <div className="navbar-links">
-            <Link className="navbar-link" to="/">Home</Link>
-            <Link className="navbar-link" to="/favorites">Favorites</Link>
+            <Link className="navbar-link" to="/movie-search-app/">首頁</Link>
+            <Link className="navbar-link" to="/movie-search-app/favorites">我的最愛</Link>
         </div>
     </nav>
 }

@@ -12,9 +12,9 @@ function App() {
 			<NavBar />
 			<main className="main-content">
 				<Routes>
-					<Route path="/" element={<Home />}></Route>
-					<Route path="/favorites" element={<Favorites />}></Route>
-					<Route path="/movie/:id" element={<MovieDetail />}></Route>
+					<Route path="/movie-search-app" element={<Home />}></Route>
+					<Route path="/movie-search-app/favorites" element={<Favorites />}></Route>
+					<Route path="/movie-search-app/movie/:id" element={<MovieDetail />}></Route>
 				</Routes>
 			</main>
 		</MovieProvider>

@@ -32,8 +32,8 @@ function MovieCard({movie}){
 			<div className="movie-info">
 				<h3>{movie.title}</h3>
 				<p>{movie.release_date}</p>
-				<Link className="movie-link" to={`/movie/${movie.id}`}>
-					more info
+				<Link className="movie-link" to={`/movie-search-app/movie/${movie.id}`}>
+					詳細資訊
 				</Link>
 			</div>
 		</div>
