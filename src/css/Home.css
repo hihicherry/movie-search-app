@@ -1,3 +1,51 @@
+.media-select {
+  color: #2D336B;
+}
+
+/* Select觸發按鈕 */
+.select-trigger {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  color: #2D336B;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.select-label {
+  margin-right: 10px;
+}
+
+.select-icon {
+  font-size: 1.2rem;
+}
+
+/* Select內容 */
+.select-content {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 0 10px #0000001a;
+  z-index: 1;
+}
+
+/* 每一個選項 */
+.select-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.select-item:hover {
+  background-color: #7886C7;
+  color: #fff;
+}
+
+.select-item[aria-selected="true"] {
+  background-color: #8796da;
+}
+
 .hidden { 
   opacity: 0;
   transform: translateY(20px);
@@ -14,7 +62,7 @@
   font-weight: bold;
   text-align: center;
   padding: 20px;
-  color: #593083;
+  color: #533670;
   animation: blink 1s infinite alternate;
 }
 
@@ -41,6 +89,7 @@
   padding: 0 1rem;
   box-sizing: border-box;
 }
+
 
 .search-input {
   flex: 1;
@@ -92,3 +141,6 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+
+

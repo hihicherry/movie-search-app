@@ -15,19 +15,25 @@ export const MovieProvider = ({children}) => {
 
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
-    }, [favorites])
+    }, [favorites]);
 
-    const addToFavorites = (movie) => {
-       setFavorites(prev => [...prev, movie]); 
-    }
+    const addToFavorites = (item, mediaType) => {
+		setFavorites((prev) => [
+			...prev, {...item, mediaType},
+		]);
+	};
 
-    const removeFromFavorites = (movieId) => {
-        setFavorites(prev => prev.filter(movie => movie.id !== movieId));
-    }
+    const removeFromFavorites = (itemId, mediaType) => {
+        setFavorites((prev) => prev.filter(
+            (item) => item.id !== itemId || item.mediaType !== mediaType
+        ));
+    };
 
-    const isFavorites = (movieId) => {
-        return favorites.some(movie => movie.id === movieId);
-    }
+    const isFavorites = (itemId, mediaType) => {
+        return favorites.some(
+            (item)=> item.id === itemId && item.mediaType === mediaType
+        );
+    };
 
 
     const value = {
