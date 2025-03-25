@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMovieContext } from "../contexts/MovieContext";
 import "../css/MovieDetail.css";
 import { motion } from "framer-motion";
 
@@ -16,6 +17,10 @@ const MovieDetail = () => {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
+
+    //匯入加入最愛功能
+    const { addToFavorites, removeFromFavorites, isFavorites } =
+		useMovieContext();
 
     useEffect(() => {
 		//取得電影基本資訊
@@ -70,27 +75,8 @@ const MovieDetail = () => {
         fetchMovieCast();
         fetchMovieGenres();
 
-        //從localstorage讀取我的最愛清單
-        const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        setFavorites(storedFavorites);
 	},[id]);
 
-    //檢查這部電影是否已存在我的最愛清單中
-    const isFavorite = favorites.some((fav) => fav.id === movie?.id);
-
-    //加入或移除最愛
-    const toggleFavorite = () => {
-        let updatedFavorites;
-        if(isFavorite){
-             updatedFavorites = favorites.filter(
-					(fav) => fav.id !== movie.id
-				);
-        }else{
-            updatedFavorites = [...favorites, movie];
-        }
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    };
 
     if(loading) return <p>載入中...</p>
     if(!movie) return <p>查無此電影</p>
@@ -140,11 +126,19 @@ const MovieDetail = () => {
 			<div className="movie-detail-buttons">
 				<button
 					className={`movie-detail-favorite ${
-						isFavorite ? "active" : ""
+						isFavorites(movie.id) ? "active" : ""
 					}`}
-					onClick={toggleFavorite}
+					onClick={() => {
+						if (isFavorites(movie.id)) {
+							removeFromFavorites(movie.id);
+						} else {
+							addToFavorites(movie);
+						}
+					}}
 				>
-					{isFavorite ? "♥ 已在最愛中" : "♡ 加入我的最愛"}
+					{isFavorites(movie.id)
+						? "♡ 從我的最愛移除"
+						: "♥ 加入我的最愛"}
 				</button>
 				<button
 					onClick={() => navigate(-1)}
