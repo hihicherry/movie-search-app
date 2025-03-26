@@ -24,7 +24,9 @@ function Favorites() {
 		return (
 			<div className="favorites-empty">
 				<h2>尚未新增任何作品至我的最愛</h2>
-				<p>開始加入你喜愛的電影或電視劇吧！</p>
+				<p>
+					開始加入你喜愛的電影吧！
+				</p>
 			</div>
 		);
 	}
