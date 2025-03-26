@@ -5,27 +5,29 @@ import MovieCard from "../components/MovieCard";
 function Favorites() {
 	const { favorites } = useMovieContext();
 
-	if (favorites.length !== 0) {
+	if (favorites &&  favorites.length !== 0) {
 		return (
 			<div className="favorites">
 				<h2>我的最愛</h2>
 				<div className="movies-grid">
-					{favorites.map((movie) => (
-						<MovieCard movie={movie} key={movie.id} />
+					{favorites.map((item) => (
+						<MovieCard
+							item={item}
+							key={item.id}
+							mediaType={item.mediaType}
+						/>
 					))}
 				</div>
 			</div>
 		);
-	}else{
-        return (
+	} else {
+		return (
 			<div className="favorites-empty">
 				<h2>尚未新增任何作品至我的最愛</h2>
-				<p>
-					開始加入你喜愛的電影吧！
-				</p>
+				<p>開始加入你喜愛的電影或電視劇吧！</p>
 			</div>
 		);
-    }
+	}
 
 }
 
