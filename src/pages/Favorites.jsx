@@ -10,8 +10,12 @@ function Favorites() {
 			<div className="favorites">
 				<h2>我的最愛</h2>
 				<div className="movies-grid">
-					{favorites.map((movie) => (
-						<MovieCard movie={movie} key={movie.id} />
+					{favorites.map((item) => (
+						<MovieCard
+							item={item}
+							key={item.id}
+							mediaType={item.mediaType}
+						/>
 					))}
 				</div>
 			</div>
@@ -21,7 +25,7 @@ function Favorites() {
 			<div className="favorites-empty">
 				<h2>尚未新增任何作品至我的最愛</h2>
 				<p>
-					開始加入你喜愛的電影吧！
+					開始加入你喜愛的電影或電視劇吧！
 				</p>
 			</div>
 		);

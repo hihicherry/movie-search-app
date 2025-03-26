@@ -5,6 +5,7 @@ const MovieContext = createContext();
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}) => {
+    //初始化時讀取localstorage的資料
     const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {

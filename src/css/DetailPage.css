@@ -1,0 +1,66 @@
+.detail-page {
+    padding: 24px;
+}
+
+.detail-title{
+    color: #5A639C;
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.detail-poster{
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.detail-castlist {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
+}
+
+.detail-content {
+    flex: 1;
+    background-color: #7886C7;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.detail-content p {
+    margin-bottom: 0.5rem;
+}
+
+.detail-content strong {
+    font-weight: bold;
+}
+
+.detail-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.detail-buttons button{
+    color: #FFF2F2;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.back-btn {
+     background-color: #5A639C;
+}
+
+.detail-favorite-btn {
+    /*background-color: #d96b9e;*/
+    background-color: #FFB3B3;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.detail-favorite-btn:hover {
+    background-color: #e36868;
+}
+
+.detail-favorite-btn.active {
+    background-color: #f5c6c6;
+}
