@@ -35,6 +35,8 @@ export const MovieProvider = ({children}) => {
 	};
 
 	const isFavorites = (itemId, mediaType) => {
+		// 確保讀取最新的 favorites
+		const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 		return favorites.some(
 			(item) => item.id === itemId && item.mediaType === mediaType
 		);

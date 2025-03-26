@@ -54,6 +54,15 @@ const DetailPage = () => {
 		fetchCast();
 	}, [id, mediaType]);
 
+	// 設定是否為最愛
+	const handleFavoriteClick = () => {
+		if (isFavorites(data.id, mediaType)) {
+			removeFromFavorites(data.id, mediaType); // 移除最愛
+		} else {
+			addToFavorites(data, mediaType); // 新增最愛
+		}
+	};
+
 	if (loading) return <p>載入中...</p>;
 	if (!data) return <p>查無此內容</p>;
 	if (error) return <p>{error}</p>;
@@ -135,15 +144,11 @@ const DetailPage = () => {
 			<div className="detail-buttons">
 				<button
 					className={`detail-favorite-btn ${
-						isFavorites(data.id) ? "active" : ""
+						isFavorites(data.id, mediaType) ? "active" : ""
 					}`}
-					onClick={() =>
-						isFavorites(data.id)
-							? removeFromFavorites(data.id)
-							: addToFavorites(data)
-					}
+					onClick={handleFavoriteClick}
 				>
-					{isFavorites(data.id)
+					{isFavorites(data.id, mediaType)
 						? "♡ 從我的最愛移除"
 						: "♥ 加入我的最愛"}
 				</button>
