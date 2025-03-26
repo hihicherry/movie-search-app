@@ -52,7 +52,6 @@
 }
 
 .detail-favorite-btn {
-    /*background-color: #d96b9e;*/
     background-color: #FFB3B3;
     transition: background-color 0.3s ease-in-out;
 }

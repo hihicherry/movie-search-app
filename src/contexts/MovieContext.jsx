@@ -17,7 +17,13 @@ export const MovieProvider = ({children}) => {
 	}, [favorites]);
 
 	const addToFavorites = (item, mediaType) => {
-		setFavorites((prev) => [...prev, { ...item, mediaType }]);
+		setFavorites((prev) => {
+			const isAlreadyFavorite = prev.some(
+				(fav) => fav.id === item.id && fav.mediaType === item.mediaType
+			);
+			if(isAlreadyFavorite) return prev;
+			return [...prev, { ...item, mediaType }];
+		});
 	};
 
 	const removeFromFavorites = (itemId, mediaType) => {

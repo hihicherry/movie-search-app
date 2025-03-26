@@ -45,6 +45,8 @@ const DetailPage = () => {
 			} catch (err) {
 				console.error(err);
 				setError("獲取演員資訊失敗");
+			} finally {
+				setLoading(false);
 			}
 		};
 

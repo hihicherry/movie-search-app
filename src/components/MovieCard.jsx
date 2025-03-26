@@ -5,12 +5,16 @@ import { Link } from "react-router-dom";
 function MovieCard({item, mediaType}){
 	const { addToFavorites, removeFromFavorites, isFavorites } =
 		useMovieContext();
-	const favorite = isFavorites(item.id);
+	const favorite = isFavorites(item.id, mediaType);
 
 	function onFavoriteClick(e) {
 		e.preventDefault();
-		if (favorite) removeFromFavorites(item.id, mediaType);
-		else addToFavorites(item, mediaType);
+		if (favorite) {
+			removeFromFavorites(item.id, mediaType);
+		}
+		else {
+			addToFavorites(item, mediaType);
+		}
 	}
 
 	const title = mediaType === "movie" ? item.title : item.name; 
