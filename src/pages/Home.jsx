@@ -85,7 +85,10 @@ function Home() {
 					value={mediaType || "movie"}
 					onValueChange={setMediaType}
 				>
-					<Select.Trigger className="select-trigger">
+					<Select.Trigger
+						className="select-trigger"
+						aria-hidden={false}
+					>
 						<span className="select-label">
 							{mediaType === "movie" ? "電影" : "電視劇"}
 						</span>
@@ -115,10 +118,12 @@ function Home() {
 					onChange={(e) => setSearchQuery(e.target.value)}
 					aria-hidden="false"
 				/>
-				<MediaSelect />
-				<button className="search-btn" type="submit">
-					查詢
-				</button>
+				<div className="search-actions">
+					<MediaSelect />
+					<button className="search-btn" type="submit">
+						查詢
+					</button>
+				</div>
 			</form>
 
 			{error && <div className="error-message">{error}</div>}

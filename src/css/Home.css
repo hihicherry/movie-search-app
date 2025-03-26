@@ -13,6 +13,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  width: 98px;
 }
 
 .select-label {
@@ -42,9 +43,6 @@
   color: #fff;
 }
 
-.select-item[aria-selected="true"] {
-  background-color: #8796da;
-}
 
 .hidden { 
   opacity: 0;
@@ -88,6 +86,7 @@
   gap: 1rem;
   padding: 0 1rem;
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 
@@ -116,6 +115,8 @@
   transition: background-color 0.2s;
   white-space: nowrap;  
   box-shadow: 0 3px 3px -2px #444444;
+  flex-grow: 0;  /* 讓搜尋按鈕不隨著空間拉伸 */
+  width: auto;   /* 讓按鈕保持原本的大小 */
 }
 
 .search-btn:hover {
@@ -141,6 +142,62 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+@media (max-width: 639px) {
+  .search-form {
+    flex-direction: column;  /* 小螢幕時保持搜尋框垂直排列 */
+    align-items: stretch; /* 讓搜尋框拉滿一行 */
+  }
+
+  .search-input {
+    width: 100%; /* 搜尋框填滿整行 */
+    margin-bottom: 0.5rem;  /* 增加底部間距 */
+  }
+
+  .search-actions {
+    display: flex;
+    gap: 0.5rem; /* 元素之間增加間距 */
+    align-items: center; /* 垂直置中對齊 */
+    justify-content: flex-start; /* 使元素靠左排列 */
+    width: 100%;
+  }
+
+  .media-select,
+  .search-btn {
+    flex: 0;  /* 防止被拉伸 */
+    width: auto;  /* 讓它們不被拉伸 */
+    min-width: 120px;  /* 固定最小寬度 */
+  }
+}
+
+/* 大螢幕樣式 */
+@media (min-width: 640px) {
+  .search-form {
+    flex-direction: row; /* 在大螢幕上排列為一行 */
+    align-items: center; /* 垂直置中 */
+    gap: 1rem; /* 給予間距 */
+  }
+
+  .search-input {
+    width: 100%; /* 讓搜尋框填滿一行 */
+    height: 45px;  /* 確保大螢幕下搜尋框不會被拉高 */
+  }
+
+  .search-actions {
+    display: flex;
+    gap: 1rem; /* 給予元素間距 */
+    justify-content: flex-start; /* 左對齊 */
+    width: auto; /* 自動調整 */
+  }
+
+  .media-select,
+  .search-btn {
+    flex: 0;  /* 防止被拉伸 */
+    width: auto;  /* 固定寬度 */
+    height: 45px;
+  }
+}
+
 
 
 
