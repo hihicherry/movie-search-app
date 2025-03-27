@@ -16,8 +16,19 @@ const DetailPage = () => {
 
 	const navigate = useNavigate();
 	//匯入加入最愛功能
-	const { addToFavorites, removeFromFavorites, isFavorites } =
+	const { favorites, addToFavorites, removeFromFavorites, isFavorites } =
 		useMovieContext();
+
+	const [isFav, setIsFav] = useState(false);
+
+	// 監聽 favorites 變化，確保 UI 正確顯示
+	useEffect(() => {
+		// 檢查 favorites 中是否已經有此項目
+		const isAlreadyFav = favorites.some(
+			(item) => item.id === parseInt(id) && item.mediaType === mediaType
+		);
+		setIsFav(isAlreadyFav);
+	}, [favorites, id, mediaType]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -55,11 +66,12 @@ const DetailPage = () => {
 	}, [id, mediaType]);
 
 	// 設定是否為最愛
-	const handleFavoriteClick = () => {
-		if (isFavorites(data.id, mediaType)) {
-			removeFromFavorites(data.id, mediaType); // 移除最愛
+	const handleFavoriteClick = (e) => {
+		e.preventDefault();
+		if (isFav) {
+			removeFromFavorites(data.id, mediaType);
 		} else {
-			addToFavorites(data, mediaType); // 新增最愛
+			addToFavorites(data, mediaType);
 		}
 	};
 
@@ -144,11 +156,11 @@ const DetailPage = () => {
 			<div className="detail-buttons">
 				<button
 					className={`detail-favorite-btn ${
-						isFavorites(data.id, mediaType) ? "active" : ""
+						isFav ? "active" : ""
 					}`}
 					onClick={handleFavoriteClick}
 				>
-					{isFavorites(data.id, mediaType)
+					{isFav
 						? "♡ 從我的最愛移除"
 						: "♥ 加入我的最愛"}
 				</button>

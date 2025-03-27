@@ -19,10 +19,12 @@ export const MovieProvider = ({children}) => {
 	const addToFavorites = (item, mediaType) => {
 		setFavorites((prev) => {
 			const isAlreadyFavorite = prev.some(
-				(fav) => fav.id === item.id && fav.mediaType === item.mediaType
+				(fav) => fav.id === item.id && fav.mediaType === mediaType
 			);
-			if(isAlreadyFavorite) return prev;
-			return [...prev, { ...item, mediaType }];
+			if (isAlreadyFavorite) return prev;
+			const newItem = { ...item, mediaType };
+			console.log("Adding to favorites:", newItem);
+			return [...prev, { ...item, mediaType }]; // 確保 mediaType 存進去！
 		});
 	};
 
@@ -35,8 +37,6 @@ export const MovieProvider = ({children}) => {
 	};
 
 	const isFavorites = (itemId, mediaType) => {
-		// 確保讀取最新的 favorites
-		const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 		return favorites.some(
 			(item) => item.id === itemId && item.mediaType === mediaType
 		);
