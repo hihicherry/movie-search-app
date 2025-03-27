@@ -1,8 +1,10 @@
 import MovieCard from "../components/MovieCard";
+import SkeletonCard from "../components/SkeletonCard";
 import { useState, useEffect } from "react";
 import { searchMovies, searchTVShows, getPopularMovies, getPopularTVShows } from "../services/api";
 import "../css/Home.css";
 import * as Select from "@radix-ui/react-select"; //下拉選單ui套件
+import { motion } from "framer-motion"; //hover動畫套件
 
 
 function Home() {
@@ -84,11 +86,9 @@ function Home() {
 				<Select.Root
 					value={mediaType || "movie"}
 					onValueChange={setMediaType}
+					aria-hidden={false}
 				>
-					<Select.Trigger
-						className="select-trigger"
-						aria-hidden={false}
-					>
+					<Select.Trigger className="select-trigger">
 						<span className="select-label">
 							{mediaType === "movie" ? "電影" : "電視劇"}
 						</span>
@@ -128,16 +128,30 @@ function Home() {
 
 			{error && <div className="error-message">{error}</div>}
 			{loading ? (
-				<div className="loading">載入中...</div>
+				<div className="movies-grid">
+					{Array(6)
+						.fill(0)
+						.map((_, i) => (
+							<SkeletonCard key={i} />
+						))}
+				</div>
 			) : (
 				<div className="movies-grid">
 					{Array.isArray(items) && items.length > 0 ? (
 						items.map((item) => (
-							<MovieCard
-								item={item}
+							//用frame-motion的功能包住moviecard
+							<motion.div
 								key={item.id}
-								mediaType={mediaType}
-							/>
+								whileHover={{
+									scale: 1.05,
+									boxShadow: "0px 10px 20px #000000",
+									borderRadius: "8px",
+									backgroundColor: "#7776B3",
+								}}
+								transition={{ duration: 0.3 }}
+							>
+								<MovieCard item={item} mediaType={mediaType} />
+							</motion.div>
 						))
 					) : (
 						<div className="no-results">沒有搜尋結果</div> // 當 items 為空時顯示提示訊息
