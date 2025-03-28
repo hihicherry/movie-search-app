@@ -3,9 +3,14 @@
 }
 
 .detail-title{
-    color: #5A639C;
+    color: #60A5FA;
     font-size: 1.875rem;
     font-weight: bold;
+}
+
+.detail-page h2 {
+    color: #F8D1FF;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.158);
 }
 
 .detail-poster{
@@ -20,18 +25,23 @@
 
 .detail-content {
     flex: 1;
-    background-color: #7886C7;
+    background: linear-gradient(to bottom right, #9095FB, #B489FC);
     color: #fff;
     border-radius: 10px;
     padding: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .detail-content p {
     margin-bottom: 0.5rem;
+    color: #F0E7FF;
 }
 
 .detail-content strong {
     font-weight: bold;
+    color: #F8D1FF;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.158);
 }
 
 .detail-buttons {
@@ -48,18 +58,26 @@
 }
 
 .back-btn {
-     background-color: #5A639C;
+    background: linear-gradient(to right, #60A5FA, #9095FB);
+}
+
+.back-btn:hover{
+    background: linear-gradient(to right, #9095FB, #A88DFC);
 }
 
 .detail-favorite-btn {
-    background-color: #FFB3B3;
+    background: linear-gradient(to right, #B489FC, #C084FC);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     transition: background-color 0.3s ease-in-out;
 }
 
 .detail-favorite-btn:hover {
-    background-color: #e36868;
+    background: linear-gradient(to right, #C084FC, #E8A9F8);
 }
 
 .detail-favorite-btn.active {
-    background-color: #f5c6c6;
+    background: linear-gradient(to right, #E8A9F8, #F5C6F8);
 }

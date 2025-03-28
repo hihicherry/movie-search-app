@@ -7,8 +7,8 @@ function NavBar(){
             <Link className="navbar-name" to="/movie-search-app/">MovieSearch</Link>
         </div>
         <div className="navbar-links">
-            <Link className="navbar-link" to="/movie-search-app/">首頁</Link>
-            <Link className="navbar-link" to="/movie-search-app/favorites">我的最愛</Link>
+            <Link className="navbar-link" to="/movie-search-app/">Home</Link>
+            <Link className="navbar-link" to="/movie-search-app/favorites">Favorites</Link>
         </div>
     </nav>
 }

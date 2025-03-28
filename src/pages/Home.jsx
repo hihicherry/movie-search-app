@@ -145,9 +145,10 @@ function Home() {
 								initial={{ borderRadius: "8px" }} // 預設邊角大小
 								whileHover={{
 									scale: 1.05,
-									boxShadow: "0px 10px 20px #000000",
+									boxShadow: "0px 5px 15px #4612a1",
 									borderRadius: "10px",
 									backgroundColor: "#7776B3",
+									
 								}}
 								transition={{ duration: 0.3 }}
 							>

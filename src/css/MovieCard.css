@@ -2,21 +2,17 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #7776B3;
-  transition: transform 0.2s;
+  background: linear-gradient(to bottom right, #9095FB, #B489FC);
+  backdrop-filter: blur(10px); /* 霧面玻璃效果 */
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 7px 7px -5px #68696b;  
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.401);
 }
 
 .movie-card.show{
   opacity: 1;
   transform: translateY(0);
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
 }
 
 .movie-poster {
@@ -78,15 +74,6 @@
   color: #ff4757;
 }
 
-.rating-select {
-  background-color: #000000b3;
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
 
 .movie-info {
   padding: 1rem;
@@ -113,12 +100,6 @@
 
 .movie-link:hover {
   color: #f0bfea;
-}
-
-.user-rating {
-  color: #ffd700;
-  font-size: 0.9rem;
-  margin-top: auto;
 }
 
 @media (max-width: 768px) {
