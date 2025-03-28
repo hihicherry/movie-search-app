@@ -14,18 +14,16 @@ function Favorites() {
 					{favorites.map((item) => (
 						<motion.div
 							key={item.id}
+							initial={{ borderRadius: "8px" }} // 預設邊角大小
 							whileHover={{
 								scale: 1.05,
 								boxShadow: "0px 10px 20px #000000",
-								borderRadius: "8px",
+								borderRadius: "10px",
 								backgroundColor: "#7776B3",
 							}}
 							transition={{ duration: 0.3 }}
 						>
-							<MovieCard
-								item={item}
-								mediaType={item.mediaType}
-							/>
+							<MovieCard item={item} mediaType={item.mediaType} />
 						</motion.div>
 					))}
 				</div>

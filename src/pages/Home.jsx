@@ -79,7 +79,7 @@ function Home() {
 		setSearchQuery(""); //清空搜尋框
 	};
 
-    //媒體類型選擇
+    //媒體類型選擇 套用radix ui
 	const MediaSelect = () => {
 		return (
 			<div className="media-select">
@@ -142,10 +142,11 @@ function Home() {
 							//用frame-motion的功能包住moviecard
 							<motion.div
 								key={item.id}
+								initial={{ borderRadius: "8px" }} // 預設邊角大小
 								whileHover={{
 									scale: 1.05,
 									boxShadow: "0px 10px 20px #000000",
-									borderRadius: "8px",
+									borderRadius: "10px",
 									backgroundColor: "#7776B3",
 								}}
 								transition={{ duration: 0.3 }}
