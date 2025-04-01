@@ -95,11 +95,11 @@
 }
 
 .movie-link {
-  color: #F8E7F6;
+  color: #EDE9FE;
 }
 
 .movie-link:hover {
-  color: #f0bfea;
+  color: #FCA5F1;
 }
 
 @media (max-width: 768px) {

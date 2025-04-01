@@ -18,10 +18,6 @@
   color: #ffffff;
 }
 
-.navbar-name:hover {
-  color: linear-gradient(135deg, #60A5FA, #C084FC);
-}
-
 .navbar-links {
   display: flex;
   gap: 0.5rem;
@@ -32,6 +28,28 @@
   padding: 1rem 1rem;
   border-radius: 4px;
   color: #FFF2F2;
+  text-decoration: none;
+  position: relative;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-link:hover {
+  color: #e0daf9;
+}
+
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #a699d3;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
 }
 
 

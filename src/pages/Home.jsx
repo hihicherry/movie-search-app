@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { searchMovies, searchTVShows, getPopularMovies, getPopularTVShows } from "../services/api";
 import "../css/Home.css";
 import * as Select from "@radix-ui/react-select"; //下拉選單ui套件
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion"; //hover動畫套件
 
 
@@ -92,7 +93,9 @@ function Home() {
 						<span className="select-label">
 							{mediaType === "movie" ? "電影" : "電視劇"}
 						</span>
-						<Select.Icon className="select-icon">▼</Select.Icon>
+						<Select.Icon className="select-icon">
+							<ChevronDownIcon />
+						</Select.Icon>
 					</Select.Trigger>
 					<Select.Content className="select-content">
 						<Select.Item value="movie" className="select-item">

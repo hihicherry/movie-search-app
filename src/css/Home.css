@@ -34,19 +34,19 @@
 
 .search-btn {
   padding: 0.75rem 1.5rem;
-   background: linear-gradient(to right, #518bd1, #a171d2); 
+  background: linear-gradient(to right, #518bd1, #a171d2); 
   color: white;
   border-radius: 4px;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s;
   white-space: nowrap;  
   box-shadow: 0 3px 3px -2px #444444;
   flex-grow: 0;  /* 讓搜尋按鈕不隨著空間拉伸 */
   width: auto;   /* 讓按鈕保持原本的大小 */
 }
 
-.search-btn:hover {
-  background-color: #9B86BD;
+.search-btn:hover{
+    background: linear-gradient(to right, #8085f4, #bdaaf6);
 }
 
 
@@ -106,12 +106,21 @@
   align-items: center;
   padding: 10px;
   background-color: #fff;
-  color: #2D336B;
+  color: #518bd1;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   width: 98px;
+  box-shadow: 0 2px 10px #0000001a;
+}
+
+.select-trigger:hover {
+	background-color: #e8e6e671;
+}
+
+.select-trigger:focus {
+  box-shadow: 0 0 0 2px #000000;
 }
 
 .select-label {
@@ -124,6 +133,7 @@
 
 /* Select內容 */
 .select-content {
+  width: 98px;
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 0 10px #0000001a;
@@ -132,12 +142,13 @@
 
 /* 每一個選項 */
 .select-item {
-  padding: 10px;
+  padding: 0.5rem;
+  border-radius: 3px;
   cursor: pointer;
 }
 
 .select-item:hover {
-  background-color: #7886C7;
+  background-color: #518bd1;
   color: #fff;
 }
 
