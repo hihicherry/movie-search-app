@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ["./src/**/*.{js,ts,jsx,tsx}", "./src/css/**/*.css"],
+	dark: "class",
 	theme: {
 		extend: {
 			colors: {
@@ -34,6 +35,8 @@ export default {
 					"linear-gradient(to right, #8085F4, #BDAAF6)",
 				"overlay-gradient":
 					"linear-gradient(to bottom, #4141431a, #414143cc)",
+				"filter-btn-hover":
+					"linear-gradient(to right, #80AFD1, #BCA9CF)",
 			},
 			fontFamily: {
 				navbar: [
