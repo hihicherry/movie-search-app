@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-	content: ["./src/**/*.{js,ts,jsx,tsx}","./src/css/**/*.css"],
+	content: ["./src/**/*.{js,ts,jsx,tsx}", "./src/css/**/*.css"],
 	theme: {
 		extend: {
 			colors: {
@@ -36,15 +36,14 @@ export default {
 					"linear-gradient(to bottom, #4141431a, #414143cc)",
 			},
 			fontFamily: {
-				navbar: ["Georgia", "Times New Roman", "Times", "serif"],
-				body: [
-					"system-ui",
-					"Times New Roman",
+				navbar: [
+					"Georgia",
 					"Avenir",
 					"Helvetica",
 					"Arial",
 					"sans-serif",
 				],
+				body: ["Avenir", "Helvetica", "Arial", "sans-serif"],
 			},
 			animation: {
 				pulse: "pulse 1.5s infinite",
