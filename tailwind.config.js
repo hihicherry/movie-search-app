@@ -17,6 +17,7 @@ export default {
         'overlay-start': '#4141431a',
         'overlay-end': '#414143cc',
         'shadow-dark': '#4612a1',
+        soft: '#F8D1FF',
       },
       backgroundImage: {
         'navbar-gradient': 'linear-gradient(135deg, #60A5FA, #C084FC)',

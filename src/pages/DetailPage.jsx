@@ -2,9 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useMovieContext } from '../contexts/MovieContext';
+import { getDetails, getCredits } from '../services/tmdbApi';
+import { ERROR_MESSAGES } from '../utils/errors';
 
-const APIKEY = '29c03fd685daf100af0e688cdd6a3315';
-const BASE_URL = 'https://api.themoviedb.org/3';
+//統一日期格式
+const formatDate = dateString => {
+  if (!dateString) return '無資料';
+  const [year, month, day] = dateString.split('-');
+  return `${year}年${month}月${day}日`;
+};
 
 const DetailPage = () => {
   const { id, mediaType } = useParams();
@@ -19,43 +25,36 @@ const DetailPage = () => {
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
-    const isAlreadyFav = favorites.some(
-      item => item.id === parseInt(id) && item.mediaType === mediaType
-    );
+    const isAlreadyFav = isFavorite(parseInt(id), mediaType);
     setIsFav(isAlreadyFav);
   }, [favorites, id, mediaType]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `${BASE_URL}/${mediaType}/${id}?api_key=${APIKEY}&language=zh-TW`
-        );
-        const json = await res.json();
-        setData(json);
+        const details = await getDetails(mediaType, id);
+        setData(details);
       } catch (err) {
-        console.error(err);
-        setError('詳細資訊讀取失敗');
-      } finally {
-        setLoading(false);
+        setError(ERROR_MESSAGES.DETAILS_FAILED);
       }
     };
 
     const fetchCast = async () => {
       try {
-        const res = await fetch(
-          `${BASE_URL}/${mediaType}/${id}/credits?api_key=${APIKEY}&language=zh-TW`
-        );
-        const json = await res.json();
-        setCast(json.cast.slice(0, 5));
+        const credits = await getCredits(mediaType, id);
+        setCast(credits.slice(0, 5));
       } catch (err) {
-        console.error(err);
-        setError('獲取演員資訊失敗');
+        setError(ERROR_MESSAGES.CREDITS_FAILED);
       }
     };
 
-    fetchData();
-    fetchCast();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([fetchData(), fetchCast()]);
+      setLoading(false);
+    };
+
+    loadData();
   }, [id, mediaType]);
 
   const handleFavoriteClick = e => {
@@ -105,7 +104,7 @@ const DetailPage = () => {
           animate="fadeIn"
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-[#F8D1FF] text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
             主要演員：
           </h2>
           <ul className="mt-2 space-y-1">
@@ -121,7 +120,7 @@ const DetailPage = () => {
           animate="fadeIn"
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-[#F8D1FF] text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
             內容簡介：
           </h2>
           <p className="mt-2 text-muted">{data.overview || '無簡介'}</p>
@@ -129,7 +128,7 @@ const DetailPage = () => {
 
         <div className="flex flex-wrap gap-4 mt-4 text-muted">
           <p>
-            <span className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
               🎬 類型：
             </span>{' '}
             {data.genres?.map(genre => (
@@ -137,14 +136,14 @@ const DetailPage = () => {
             ))}
           </p>
           <p>
-            <span className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
               ⭐ 評分：
             </span>{' '}
             {data.vote_average}
           </p>
           {mediaType === 'movie' && (
             <p>
-              <strong className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                 📅 上映日期：
               </strong>
               <span>
@@ -159,7 +158,7 @@ const DetailPage = () => {
           {mediaType === 'tv' && (
             <>
               <p className="mb-2 text-muted">
-                <strong className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📅 首播日期：
                 </strong>
                 <span>
@@ -171,13 +170,13 @@ const DetailPage = () => {
                 </span>
               </p>
               <p className="mb-2 text-muted">
-                <strong className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 季數：
                 </strong>{' '}
                 {data.number_of_seasons} 季
               </p>
               <p className="mb-2 text-muted">
-                <strong className="font-bold text-[#F8D1FF] [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 集數：
                 </strong>{' '}
                 {data.number_of_episodes} 集

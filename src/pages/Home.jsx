@@ -6,7 +6,8 @@ import {
   searchTVShows,
   getPopularMovies,
   getPopularTVShows,
-} from '../services/api';
+} from '../services/tmdbApi';
+import { ERROR_MESSAGES } from '../utils/errors';
 import * as Select from '@radix-ui/react-select'; //下拉選單ui套件
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion'; //hover動畫套件
@@ -23,34 +24,20 @@ function Home() {
     const loadItems = async () => {
       try {
         setLoading(true);
-        let fetchedItems;
-
-        if (mediaType === 'movie') {
-          fetchedItems = await getPopularMovies();
-        } else if (mediaType === 'tv') {
-          fetchedItems = await getPopularTVShows();
-        }
+        const fetchedItems =
+          mediaType === 'movie'
+            ? await getPopularMovies()
+            : await getPopularTVShows();
         setItems(fetchedItems || []);
-        setVisibleMovies([]); //先清空動畫狀態
-        //依序顯示動畫
-        if (mediaType === 'movie') {
-          fetchedItems.forEach((movie, index) => {
-            setTimeout(() => {
-              //控制動畫順序
-              setVisibleMovies(prev => [...prev, movie.id]);
-            }, index * 150);
-          });
-        } else if (mediaType === 'tv') {
-          fetchedItems.forEach((tv, index) => {
-            setTimeout(() => {
-              //控制動畫順序
-              setVisibleMovies(prev => [...prev, tv.id]);
-            }, index * 150);
-          });
-        }
+        setVisibleMovies([]);
+        fetchedItems.forEach((item, index) => {
+          setTimeout(() => {
+            setVisibleMovies(prev => [...prev, item.id]);
+          }, index * 150);
+        });
       } catch (err) {
         console.log(err);
-        setError('資料讀取失敗...');
+        setError(ERROR_MESSAGES.FETCH_FAILED);
       } finally {
         setLoading(false);
       }
@@ -60,22 +47,19 @@ function Home() {
 
   const handleSearch = async e => {
     e.preventDefault();
-    if (!searchQuery.trim()) return; //搜尋框未輸入資料則不進行搜尋
-    if (loading) return; //若正在載入中則不能進行搜尋
+    if (!searchQuery.trim() || loading) return; //搜尋框未輸入資料則不進行搜尋,若正在載入中則不能進行搜尋
 
     setLoading(true);
     try {
-      let searchResults = [];
-      if (mediaType === 'movie') {
-        searchResults = await searchMovies(searchQuery);
-      } else if (mediaType === 'tv') {
-        searchResults = await searchTVShows(searchQuery);
-      }
+      const searchResults =
+        mediaType === 'movie'
+          ? await searchMovies(searchQuery)
+          : await searchTVShows(searchQuery);
       setItems(Array.isArray(searchResults) ? searchResults : []);
       setError(null);
     } catch (err) {
       console.log(err);
-      setError('查詢失敗...');
+      setError(ERROR_MESSAGES.SEARCH_FAILED);
     } finally {
       setLoading(false);
     }
@@ -131,13 +115,14 @@ function Home() {
           placeholder="請輸入欲查詢的電影或電視劇名稱"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          aria-hidden="false"
+          aria-label="搜尋電影或電視劇"
         />
         <div className="flex gap-2 sm:gap-4 justify-start w-full sm:w-auto">
           <MediaSelect />
           <button
             className="px-6 py-3 bg-button-gradient text-white rounded transition-all duration-300 hover:bg-search-btn-hover shadow-[0_3px_3px_-2px_#444444] flex-shrink-0 sm:h-[45px]"
             type="submit"
+            aria-label="執行搜尋"
           >
             查詢
           </button>
