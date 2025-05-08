@@ -8,7 +8,7 @@
   margin-bottom: 2rem;
   text-align: center;
   font-size: 2.5rem;
-  color: #60A5FA;
+  color: #60a5fa;
 }
 
 .favorites-empty {
@@ -23,7 +23,7 @@
 .favorites-empty h2 {
   margin-bottom: 1rem;
   font-size: 2rem;
-  color: #60A5FA;
+  color: #60a5fa;
 }
 
 .favorites-empty p {
@@ -31,7 +31,6 @@
   font-size: 1.2rem;
   line-height: 1.6;
 }
-
 
 /* Animation for new favorites being added */
 @keyframes fadeIn {
@@ -48,4 +47,3 @@
 .movies-grid > * {
   animation: fadeIn 0.3s ease-out forwards;
 }
-

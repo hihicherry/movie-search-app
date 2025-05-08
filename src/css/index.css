@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, 'Times New Roman', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    system-ui, 'Times New Roman', system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -19,7 +21,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -42,7 +45,7 @@ a {
   text-decoration: inherit;
 }
 
-a:hover{
+a:hover {
   cursor: pointer;
 }
 
@@ -69,5 +72,3 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
-

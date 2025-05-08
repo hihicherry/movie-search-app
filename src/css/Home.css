@@ -14,7 +14,6 @@
   flex-wrap: wrap;
 }
 
-
 .search-input {
   flex: 1;
   padding: 0.75rem 1rem;
@@ -29,26 +28,25 @@
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #7776B3;
+  box-shadow: 0 0 0 2px #7776b3;
 }
 
 .search-btn {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(to right, #518bd1, #a171d2); 
+  background: linear-gradient(to right, #518bd1, #a171d2);
   color: white;
   border-radius: 4px;
   font-weight: 500;
   transition: background-color 0.3s;
-  white-space: nowrap;  
+  white-space: nowrap;
   box-shadow: 0 3px 3px -2px #444444;
-  flex-grow: 0;  /* 讓搜尋按鈕不隨著空間拉伸 */
-  width: auto;   /* 讓按鈕保持原本的大小 */
+  flex-grow: 0; /* 讓搜尋按鈕不隨著空間拉伸 */
+  width: auto; /* 讓按鈕保持原本的大小 */
 }
 
-.search-btn:hover{
-    background: linear-gradient(to right, #8085f4, #bdaaf6);
+.search-btn:hover {
+  background: linear-gradient(to right, #8085f4, #bdaaf6);
 }
-
 
 @media (max-width: 639px) {
   .home {
@@ -71,13 +69,13 @@
 
 @media (max-width: 639px) {
   .search-form {
-    flex-direction: column;  /* 小螢幕時保持搜尋框垂直排列 */
+    flex-direction: column; /* 小螢幕時保持搜尋框垂直排列 */
     align-items: stretch; /* 讓搜尋框拉滿一行 */
   }
 
   .search-input {
     width: 100%; /* 搜尋框填滿整行 */
-    margin-bottom: 0.5rem;  /* 增加底部間距 */
+    margin-bottom: 0.5rem; /* 增加底部間距 */
   }
 
   .search-actions {
@@ -90,14 +88,14 @@
 
   .media-select,
   .search-btn {
-    flex: 0;  /* 防止被拉伸 */
-    width: auto;  /* 讓它們不被拉伸 */
-    min-width: 120px;  /* 固定最小寬度 */
+    flex: 0; /* 防止被拉伸 */
+    width: auto; /* 讓它們不被拉伸 */
+    min-width: 120px; /* 固定最小寬度 */
   }
 }
 
 .media-select {
-  color: #2D336B;
+  color: #2d336b;
 }
 
 /* Select觸發按鈕 */
@@ -116,7 +114,7 @@
 }
 
 .select-trigger:hover {
-	background-color: #e8e6e671;
+  background-color: #e8e6e671;
 }
 
 .select-trigger:focus {
@@ -152,8 +150,7 @@
   color: #fff;
 }
 
-
-.hidden { 
+.hidden {
   opacity: 0;
   transform: translateY(20px);
 }
@@ -161,7 +158,9 @@
 .fade-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
 }
 
 .loading {
@@ -174,14 +173,13 @@
 }
 
 @keyframes blink {
-    from {
-        opacity: 0.6;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
 }
-
 
 /* 大螢幕樣式 */
 @media (min-width: 640px) {
@@ -193,7 +191,7 @@
 
   .search-input {
     width: 100%; /* 讓搜尋框填滿一行 */
-    height: 45px;  /* 確保大螢幕下搜尋框不會被拉高 */
+    height: 45px; /* 確保大螢幕下搜尋框不會被拉高 */
   }
 
   .search-actions {
@@ -205,12 +203,8 @@
 
   .media-select,
   .search-btn {
-    flex: 0;  /* 防止被拉伸 */
-    width: auto;  /* 固定寬度 */
+    flex: 0; /* 防止被拉伸 */
+    width: auto; /* 固定寬度 */
     height: 45px;
   }
 }
-
-
-
-
