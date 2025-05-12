@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{js,ts,jsx,tsx}', './src/css/**/*.css'],
-  dark: 'class',
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -18,11 +18,17 @@ export default {
         'overlay-end': '#414143cc',
         'shadow-dark': '#4612a1',
         soft: '#F8D1FF',
+        'dark-bg': '#1E1A3C', // 深色模式背景
+        'dark-navbar-start': '#7BB5FF', // 深色模式漸層起始
+        'dark-navbar-end': '#D4A5FF', // 深色模式漸層結束
       },
       backgroundImage: {
         'navbar-gradient': 'linear-gradient(135deg, #60A5FA, #C084FC)',
+        'dark-navbar-gradient': 'linear-gradient(135deg, #7BB5FF, #D4A5FF)', // 深色模式漸層
         'button-gradient': 'linear-gradient(to right, #518BD1, #A171D2)',
         'card-gradient': 'linear-gradient(to bottom right, #9095FB, #B489FC)',
+        'dark-card-gradient':
+          'linear-gradient(to bottom right, #A5B0FF, #C8A5FF)',
         'back-btn': 'linear-gradient(to right, #60A5FA, #9095FB)',
         'back-btn-hover': 'linear-gradient(to right, #9095FB, #A88DFC)',
         'favorite-btn': 'linear-gradient(to right, #B489FC, #C084FC)',

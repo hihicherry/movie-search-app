@@ -20,7 +20,7 @@ function MovieCard({ item, mediaType }) {
 
   return (
     <div
-      className="relative rounded-lg bg-card-gradient h-full flex flex-col shadow-[0_4px_10px_rgba(0,0,0,0.401)]"
+      className="relative rounded-lg bg-card-gradient dark:bg-dark-card-gradient h-full flex flex-col shadow-[0_4px_10px_rgba(0,0,0,0.401)]"
       style={{ backdropFilter: 'blur(10px)' }}
     >
       <div className="relative aspect-[2/3] w-full">
@@ -41,12 +41,12 @@ function MovieCard({ item, mediaType }) {
         </div>
       </div>
       <div className="p-4 flex-1 flex flex-col gap-2">
-        <h3 className="text-base text-light m-0">{title}</h3>
-        <p className="text-sm text-[#fff2f2b2]">
+        <h3 className="text-base text-light dark:text-muted m-0">{title}</h3>
+        <p className="text-sm text-muted dark:text-light">
           {releaseDate ? releaseDate.slice(0, 4) : '未知'}
         </p>
         <Link
-          className="text-[#EDE9FE] hover:text-hover"
+          className="text-light dark:text-muted hover:text-hover dark:hover:text-hover"
           to={`/movie-search-app/${
             mediaType === 'movie' ? 'movie' : 'tv'
           }/${item.id}`}

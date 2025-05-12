@@ -5,15 +5,15 @@ const MovieContext = createContext();
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({ children }) => {
+  // 初始化收藏清單，從 localStorage 讀取或預設為空陣列
   const [favorites, setFavorites] = useState(() => {
-    //初始化時讀取localstorage的資料
     const storedFavs = localStorage.getItem('favorites');
     return storedFavs ? JSON.parse(storedFavs) : [];
   });
 
+  // 初始化主題，從 localStorage 讀取或預設為淺色
   const [theme, setTheme] = useState(() => {
-    //初始化時讀取 localStorage，若無則預設暗色
-    return localStorage.getItem('theme') || 'dark';
+    return localStorage.getItem('theme') || 'light';
   });
 
   // 監聽favorites變化，存入localStorage
@@ -21,20 +21,18 @@ export const MovieProvider = ({ children }) => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
 
+  // 監聽 theme 變化，存入 localStorage 並更新 document class
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    //動態切換 html 的 class
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
+  // 切換主題（light/dark）
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
+  // 添加到收藏清單，確保不重複
   const addToFavorites = (item, mediaType) => {
     setFavorites(prev => {
       const isAlreadyFavorite = prev.some(
@@ -43,23 +41,25 @@ export const MovieProvider = ({ children }) => {
       if (isAlreadyFavorite) return prev;
       const newItem = { ...item, mediaType };
       console.log('Adding to favorites:', newItem);
-      return [...prev, { ...item, mediaType }]; // 確保 mediaType 存進去！
+      return [...prev, { ...item, mediaType }];
     });
   };
 
+  // 從收藏清單移除
   const removeFromFavorites = (itemId, mediaType) => {
     setFavorites(prev =>
       prev.filter(item => item.id !== itemId || item.mediaType !== mediaType)
     );
   };
 
+  // 從收藏清單移除
   const isFavorite = (itemId, mediaType) => {
     return favorites.some(
       item => item.id === itemId && item.mediaType === mediaType
     );
   };
 
-  //提供context給其他元件使用
+  // 提供context給其他元件使用
   const value = {
     favorites,
     addToFavorites,

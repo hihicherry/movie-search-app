@@ -9,20 +9,19 @@ import { MovieProvider } from './contexts/MovieContext';
 function App() {
   return (
     <MovieProvider>
-      <NavBar />
-      <main className="main-content">
-        <Routes>
-          <Route path="/movie-search-app/" element={<Home />}></Route>
-          <Route
-            path="/movie-search-app/favorites"
-            element={<Favorites />}
-          ></Route>
-          <Route
-            path="/movie-search-app/:mediaType/:id"
-            element={<DetailPage />}
-          ></Route>
-        </Routes>
-      </main>
+      <div className="min-h-screen bg-white dark:bg-dark-bg transition-colors duration-300">
+        <NavBar />
+        <main className="main-content">
+          <Routes>
+            <Route path="/movie-search-app/" element={<Home />} />
+            <Route path="/movie-search-app/favorites" element={<Favorites />} />
+            <Route
+              path="/movie-search-app/:mediaType/:id"
+              element={<DetailPage />}
+            />
+          </Routes>
+        </main>
+      </div>
     </MovieProvider>
   );
 }
