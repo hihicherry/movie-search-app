@@ -10,6 +10,7 @@ MovieSearch 是一個開源的電影與電視節目查詢網站，旨在為使�
 收藏管理：允許使用者將喜愛的影視加入個人收藏清單，並支援移除功能（使用 localStorage 持久化儲存）。
 響應式設計：使用 Tailwind CSS 實現行動裝置與桌面端的適配，確保跨平台一致性。
 動畫效果：透過 Framer Motion 實現流暢的 UI 動畫，提升互動體驗。
+主題切換功能：新增深色與淺色主題切換，使用 React Context 管理主題狀態並儲存於 localStorage，提升使用者體驗。
 程式碼品質：整合 ESLint 和 Prettier，確保程式碼一致性與可維護性。
 
 技術棧
@@ -134,7 +135,6 @@ API 呼叫重複：部分 API 邏輯分散在多個組件，計畫集中到 serv
 
 未來計畫
 
-主題切換功能：新增深色與淺色主題切換，使用 React Context 管理主題狀態並儲存於 localStorage，提升使用者體驗。
 引入 TypeScript：將專案轉為 TypeScript，增強型別安全（計畫創建 tsconfig.json 並轉換 .jsx 為 .tsx）。
 API 邏輯重構：提取重複的 API 呼叫邏輯到 tmdbApi.js，並實現快取機制以提升效能。
 進階搜尋功能：新增篩選器（例如按年份、類型）與分頁功能，優化搜尋體驗。
