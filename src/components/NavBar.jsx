@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMovieContext } from '../contexts/MovieContext';
+import { SunIcon, MoonIcon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 function NavBar() {
   const { theme, toggleTheme } = useMovieContext();
@@ -37,7 +38,7 @@ function NavBar() {
           className="text-light text-xl px-2 py-2 rounded hover:text-hover"
           aria-label={theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'}
         >
-          {theme === 'dark' ? '☀️' : '🌙'}
+          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
         </button>
       </div>
       {/* 行動端漢堡選單 */}
@@ -47,7 +48,7 @@ function NavBar() {
           className="text-light text-xl px-2 py-2 rounded hover:text-hover"
           aria-label={isMenuOpen ? '關閉選單' : '開啟選單'}
         >
-          ☰
+          <HamburgerMenuIcon />
         </button>
       </div>
       <AnimatePresence>
@@ -84,7 +85,7 @@ function NavBar() {
                   theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'
                 }
               >
-                {theme === 'dark' ? '☀️ 淺色模式' : '🌙 深色模式'}
+                {theme === 'dark' ? '淺色模式' : '深色模式'}
               </button>
             </div>
           </motion.div>

@@ -26,17 +26,29 @@ export default {
         'navbar-gradient': 'linear-gradient(135deg, #60A5FA, #C084FC)',
         'dark-navbar-gradient': 'linear-gradient(135deg, #7BB5FF, #D4A5FF)', // 深色模式漸層
         'button-gradient': 'linear-gradient(to right, #518BD1, #A171D2)',
+        'dark-button-gradient': 'linear-gradient(to right, #6A9BE1, #B891E2)',
         'card-gradient': 'linear-gradient(to bottom right, #9095FB, #B489FC)',
         'dark-card-gradient':
           'linear-gradient(to bottom right, #A5B0FF, #C8A5FF)',
         'back-btn': 'linear-gradient(to right, #60A5FA, #9095FB)',
+        'dark-back-btn': 'linear-gradient(to right, #7BB5FF, #A5B0FF)',
         'back-btn-hover': 'linear-gradient(to right, #9095FB, #A88DFC)',
+        'dark-back-btn-hover': 'linear-gradient(to right, #A5B0FF, #C8A5FF)',
         'favorite-btn': 'linear-gradient(to right, #B489FC, #C084FC)',
+        'dark-favorite-btn': 'linear-gradient(to right, #C8A5FF, #D4A5FF)',
         'favorite-btn-hover': 'linear-gradient(to right, #C084FC, #E8A9F8)',
+        'dark-favorite-btn-hover':
+          'linear-gradient(to right, #D4A5FF, #E8B9FF)',
         'favorite-btn-active': 'linear-gradient(to right, #E8A9F8, #F5C6F8)',
+        'dark-favorite-btn-active':
+          'linear-gradient(to right, #E8B9FF, #F5D6FF)',
         'search-btn-hover': 'linear-gradient(to right, #8085F4, #BDAAF6)',
+        'dark-search-btn-hover': 'linear-gradient(to right, #95A0FF, #C8B5FF)',
         'overlay-gradient': 'linear-gradient(to bottom, #4141431a, #414143cc)',
+        'dark-overlay-gradient':
+          'linear-gradient(to bottom, #1e1a3c1a, #1e1a3ccc)',
         'filter-btn-hover': 'linear-gradient(to right, #80AFD1, #BCA9CF)',
+        'dark-filter-btn-hover': 'linear-gradient(to right, #95BFE1, #C8B9E2)',
       },
       fontFamily: {
         navbar: ['Georgia', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],

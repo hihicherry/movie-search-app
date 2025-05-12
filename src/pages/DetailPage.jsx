@@ -68,17 +68,26 @@ const DetailPage = () => {
 
   if (loading)
     return (
-      <p className="text-center text-xl font-bold text-[#533670] animate-blink">
+      <p className="text-center text-xl font-bold text-[#533670] dark:text-light animate-blink">
         載入中...
       </p>
     );
   if (!data)
-    return <p className="text-center text-xl text-gray-500">查無此內容</p>;
-  if (error) return <p className="text-center text-xl text-red-500">{error}</p>;
+    return (
+      <p className="text-center text-xl text-gray-500 dark:text-gray-300">
+        查無此內容
+      </p>
+    );
+  if (error)
+    return (
+      <p className="text-center text-xl text-red-500 dark:text-red-400">
+        {error}
+      </p>
+    );
 
   return (
     <motion.div
-      className="p-6"
+      className="p-6 bg-white dark:bg-dark-bg transition-colors duration-300"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -89,14 +98,14 @@ const DetailPage = () => {
           backgroundImage: `url('https://image.tmdb.org/t/p/w1280${data.backdrop_path}')`,
         }}
       >
-        <div className="absolute inset-0 bg-overlay-gradient"></div>
-        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#4612a1]">
+        <div className="absolute inset-0 bg-overlay-gradient dark:bg-dark-overlay-gradient"></div>
+        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white text-white [text-shadow:_0_2px_10px_#4612a1]">
           {data.title || data.name}
         </h1>
       </div>
 
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-card-gradient text-white rounded-2xl p-6 shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-card-gradient dark:bg-dark-card-gradient text-white rounded-2xl p-6 shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-colors duration-300"
         style={{ backdropFilter: 'blur(10px)' }}
       >
         <motion.div
@@ -109,7 +118,7 @@ const DetailPage = () => {
           </h2>
           <ul className="mt-2 space-y-1">
             {cast.map(actor => (
-              <li key={actor.id} className="text-muted">
+              <li key={actor.id} className="text-light dark:text-muted">
                 {actor.name} - {actor.character}
               </li>
             ))}
@@ -123,10 +132,12 @@ const DetailPage = () => {
           <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
             內容簡介：
           </h2>
-          <p className="mt-2 text-muted">{data.overview || '無簡介'}</p>
+          <p className="mt-2 text-light dark:text-muted">
+            {data.overview || '無簡介'}
+          </p>
         </motion.div>
 
-        <div className="flex flex-wrap gap-4 mt-4 text-muted">
+        <div className="flex flex-wrap gap-4 mt-4 text-light dark:text-muted">
           <p>
             <span className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
               🎬 類型：
@@ -157,7 +168,7 @@ const DetailPage = () => {
           )}
           {mediaType === 'tv' && (
             <>
-              <p className="mb-2 text-muted">
+              <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📅 首播日期：
                 </strong>
@@ -169,13 +180,13 @@ const DetailPage = () => {
                     : '無資料'}
                 </span>
               </p>
-              <p className="mb-2 text-muted">
+              <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 季數：
                 </strong>{' '}
                 {data.number_of_seasons} 季
               </p>
-              <p className="mb-2 text-muted">
+              <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 集數：
                 </strong>{' '}
@@ -187,15 +198,17 @@ const DetailPage = () => {
       </div>
       <div className="flex gap-2 mt-2">
         <button
-          className={`bg-favorite-btn text-white px-6 py-3 rounded-lg transition-all duration-300 hover:bg-favorite-btn-hover ${
-            isFav ? 'bg-favorite-btn-active animate-pulse' : ''
+          className={`bg-favorite-btn dark:bg-dark-favorite-btn text-white px-6 py-3 rounded-lg transition-all duration-300 hover:bg-favorite-btn-hover dark:hover:bg-dark-favorite-btn-hover ${
+            isFav
+              ? 'bg-favorite-btn-active dark:bg-dark-favorite-btn-active animate-pulse'
+              : ''
           }`}
           onClick={handleFavoriteClick}
         >
           {isFav ? '♡ 從我的最愛移除' : '♥ 加入我的最愛'}
         </button>
         <button
-          className="bg-back-btn text-light px-4 py-2 rounded-lg hover:bg-back-btn-hover"
+          className="bg-back-btn dark:bg-dark-back-btn text-white px-4 py-2 rounded-lg hover:bg-back-btn-hover dark:hover:bg-dark-back-btn-hover"
           onClick={() => navigate(-1)}
         >
           <span>←</span> 返回
