@@ -58,7 +58,6 @@ const DetailPage = () => {
             video.site === 'YouTube' &&
             ['Trailer', 'Teaser'].includes(video.type)
         );
-        console.log(videoData);
         setVideos(trailer ? [trailer] : []);
       } catch (err) {
         setError('無法載入預告片');
@@ -126,22 +125,52 @@ const DetailPage = () => {
         <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
           預告片：
         </h2>
-        {videos.length > 0 ? (
-          <div
-            className="relative w-full"
-            style={{ paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}
-          >
-            <iframe
-              className="absolute top-0 left-0 w-full h-full rounded-lg"
-              src={`https://www.youtube.com/embed/${videos[0].key}`}
-              title="預告片"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        ) : (
-          <p className="text-light dark:text-muted mt-2">暫無預告片</p>
-        )}
+        <motion.div
+          className="relative rounded-lg overflow-hidden bg-card-gradient dark:bg-dark-card-gradient shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-300"
+          style={{ backdropFilter: 'blur(10px)' }}
+          whileHover={{ scale: 1.02, boxShadow: '0 6px 15px rgba(0,0,0,0.3)' }}
+          transition={{ duration: 0.3 }}
+        >
+          {videos.length > 0 ? (
+            <div
+              className="relative w-full"
+              style={{ paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}
+            >
+              <iframe
+                className="absolute top-0 left-0 w-full h-full border-2 border-[#7776B3] dark:border-[#533670] rounded-lg"
+                src={`https://www.youtube.com/embed/${videos[0].key}?rel=0&modestbranding=1`}
+                title="預告片"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          ) : (
+            <div className="p-6 text-center bg-[#ffffff0d] dark:bg-[#1e1a3c33] rounded-lg">
+              <svg
+                className="w-12 h-12 mx-auto text-gray-500 dark:text-gray-300 mb-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="text-light dark:text-muted text-lg">暫無預告片</p>
+            </div>
+          )}
+        </motion.div>
       </div>
 
       <div

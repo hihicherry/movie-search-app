@@ -130,13 +130,10 @@ Fork 專案：點擊 GitHub 上的 Fork 按鈕，創建個人副本。
 已知問題
 
 ESLint 配置：目前使用 .eslintrc.json，但 ESLint 10.0.0 將棄用此格式，計畫遷移到 eslint.config.js 以適應未來版本。
-命名不一致：部分程式碼（如類名 text-text-light）已統一為更直觀的命名（text-light），但需檢查其他檔案是否仍有不一致。
-API 呼叫重複：部分 API 邏輯分散在多個組件，計畫集中到 services/tmdbApi.js。
 
 未來計畫
 
 引入 TypeScript：將專案轉為 TypeScript，增強型別安全（計畫創建 tsconfig.json 並轉換 .jsx 為 .tsx）。
-API 邏輯重構：提取重複的 API 呼叫邏輯到 tmdbApi.js，並實現快取機制以提升效能。
 進階搜尋功能：新增篩選器（例如按年份、類型）與分頁功能，優化搜尋體驗。
 單元測試：引入 Vitest 或 Jest，測試組件與 API 邏輯的穩定性。
 多語言支援：透過 i18next 實現多語言介面（例如繁體中文、英文）。
