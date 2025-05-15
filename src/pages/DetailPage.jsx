@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useMovieContext } from '../contexts/MovieContext';
-import { getDetails, getCredits } from '../services/tmdbApi';
+import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
 import { ERROR_MESSAGES } from '../utils/errors';
 
 //統一日期格式
@@ -16,6 +16,7 @@ const DetailPage = () => {
   const { id, mediaType } = useParams();
   const [data, setData] = useState(null);
   const [cast, setCast] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -48,9 +49,25 @@ const DetailPage = () => {
       }
     };
 
+    const fetchVideos = async () => {
+      try {
+        const videoData = await getVideos(mediaType, id);
+        // 篩選 YouTube 平台的預告片
+        const trailer = videoData.find(
+          video =>
+            video.site === 'YouTube' &&
+            ['Trailer', 'Teaser'].includes(video.type)
+        );
+        console.log(videoData);
+        setVideos(trailer ? [trailer] : []);
+      } catch (err) {
+        setError('無法載入預告片');
+      }
+    };
+
     const loadData = async () => {
       setLoading(true);
-      await Promise.all([fetchData(), fetchCast()]);
+      await Promise.all([fetchData(), fetchCast(), fetchVideos()]);
       setLoading(false);
     };
 
@@ -102,6 +119,29 @@ const DetailPage = () => {
         <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white text-white [text-shadow:_0_2px_10px_#4612a1]">
           {data.title || data.name}
         </h1>
+      </div>
+
+      {/* 預告片區域 */}
+      <div className="mt-6">
+        <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          預告片：
+        </h2>
+        {videos.length > 0 ? (
+          <div
+            className="relative w-full"
+            style={{ paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}
+          >
+            <iframe
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+              src={`https://www.youtube.com/embed/${videos[0].key}`}
+              title="預告片"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ) : (
+          <p className="text-light dark:text-muted mt-2">暫無預告片</p>
+        )}
       </div>
 
       <div
@@ -157,13 +197,7 @@ const DetailPage = () => {
               <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                 📅 上映日期：
               </strong>
-              <span>
-                {data.release_date
-                  ? `${data.release_date.split('-')[0]}年${
-                      data.release_date.split('-')[1]
-                    }月${data.release_date.split('-')[2]}日`
-                  : '無資料'}
-              </span>
+              <span>{formatDate(data.release_date)}</span>
             </p>
           )}
           {mediaType === 'tv' && (
@@ -172,13 +206,7 @@ const DetailPage = () => {
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📅 首播日期：
                 </strong>
-                <span>
-                  {data.first_air_date
-                    ? `${data.first_air_date.split('-')[0]}年${
-                        data.first_air_date.split('-')[1]
-                      }月${data.first_air_date.split('-')[2]}日`
-                    : '無資料'}
-                </span>
+                <span>{formatDate(data.first_air_date)}</span>
               </p>
               <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">

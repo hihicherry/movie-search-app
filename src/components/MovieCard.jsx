@@ -1,9 +1,12 @@
 import { useMovieContext } from '../contexts/MovieContext';
 import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
 function MovieCard({ item, mediaType }) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
   const favorite = isFavorite(item.id, mediaType);
+  const imgRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   function onFavoriteClick(e) {
     e.preventDefault();
@@ -18,6 +21,29 @@ function MovieCard({ item, mediaType }) {
   const releaseDate =
     mediaType === 'movie' ? item.release_date : item.first_air_date;
 
+  // 使用 IntersectionObserver 實現懶加載
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => {
+      if (imgRef.current) {
+        observer.unobserve(imgRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div
       className="relative rounded-lg bg-card-gradient dark:bg-dark-card-gradient h-full flex flex-col shadow-[0_4px_10px_rgba(0,0,0,0.401)] transition-colors duration-300"
@@ -28,6 +54,7 @@ function MovieCard({ item, mediaType }) {
           src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
           alt={title}
           className="w-full h-full rounded"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-overlay-gradient dark:bg-dark-overlay-gradient opacity-0 hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
           <button
