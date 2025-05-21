@@ -11,20 +11,21 @@ import { ERROR_MESSAGES } from '../utils/errors';
 import * as Select from '@radix-ui/react-select'; //下拉選單ui套件
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion'; //hover動畫套件
+import { Movie, TVShow, MediaType } from '../types/tmdb';
 
 function Home() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [items, setItems] = useState([]); // 儲存搜尋或熱門結果
-  const [visibleMovies, setVisibleMovies] = useState([]); //控制載入動畫
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [mediaType, setMediaType] = useState('movie'); // 默認為電影
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [items, setItems] = useState<(Movie | TVShow)[]>([]); // 儲存搜尋或熱門結果
+  const [visibleMovies, setVisibleMovies] = useState<number[]>([]); //控制載入動畫
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [mediaType, setMediaType] = useState<MediaType>('movie'); // 默認為電影
 
   useEffect(() => {
     const loadItems = async () => {
       try {
         setLoading(true);
-        const fetchedItems =
+        const fetchedItems: (Movie | TVShow)[] =
           mediaType === 'movie'
             ? await getPopularMovies()
             : await getPopularTVShows();
@@ -45,13 +46,13 @@ function Home() {
     loadItems();
   }, [mediaType]);
 
-  const handleSearch = async e => {
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchQuery.trim() || loading) return; //搜尋框未輸入資料則不進行搜尋,若正在載入中則不能進行搜尋
 
     setLoading(true);
     try {
-      const searchResults =
+      const searchResults: (Movie | TVShow)[] =
         mediaType === 'movie'
           ? await searchMovies(searchQuery)
           : await searchTVShows(searchQuery);
@@ -68,15 +69,15 @@ function Home() {
   };
 
   //媒體類型選擇 套用radix ui
-  const MediaSelect = () => {
+  const MediaSelect: React.FC = () => {
     return (
       <div className="media-select">
         <Select.Root
-          value={mediaType || 'movie'}
+          value={mediaType}
           onValueChange={setMediaType}
           aria-hidden={false}
         >
-          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white dark:bg-gray-800 text-gray-800 dark:text-light text-button-start border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-70 focus:shadow-[0_0_0_2px_#000000] w-[98px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
+          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white dark:bg-gray-800  dark:text-light text-button-start border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-70 focus:shadow-[0_0_0_2px_#000000] w-[98px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
             <span className="mr-2.5">
               {mediaType === 'movie' ? '電影' : '電視劇'}
             </span>

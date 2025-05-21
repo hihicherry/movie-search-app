@@ -2,17 +2,18 @@ import { useMovieContext } from '../contexts/MovieContext';
 import MovieCard from '../components/MovieCard';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Movie, TVShow, MediaType } from '../types/tmdb';
 
 function Favorites() {
   const { favorites } = useMovieContext();
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState<MediaType | 'all'>('all');
 
   const filteredFavorites = favorites.filter(item => {
     if (filter === 'all') return true;
     return item.mediaType === filter;
   });
 
-  const filterButtons = [
+  const filterButtons: { label: string; value: MediaType | 'all' }[] = [
     { label: '全部', value: 'all' },
     { label: '電影', value: 'movie' },
     { label: '電視劇', value: 'tv' },
@@ -52,7 +53,7 @@ function Favorites() {
             }}
             transition={{ duration: 0.3 }}
           >
-            <MovieCard item={item} mediaType={item.mediaType} />
+            <MovieCard item={item} mediaType={item.mediaType as MediaType} />
           </motion.div>
         ))}
       </div>

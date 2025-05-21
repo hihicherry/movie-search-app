@@ -4,36 +4,42 @@ import { motion } from 'framer-motion';
 import { useMovieContext } from '../contexts/MovieContext';
 import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
 import { ERROR_MESSAGES } from '../utils/errors';
+import { Movie, TVShow, Cast, Video, MediaType } from '../types/tmdb';
 
 //統一日期格式
-const formatDate = dateString => {
+const formatDate = (dateString?: string): string => {
   if (!dateString) return '無資料';
   const [year, month, day] = dateString.split('-');
   return `${year}年${month}月${day}日`;
 };
 
-const DetailPage = () => {
-  const { id, mediaType } = useParams();
-  const [data, setData] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+interface Params {
+  id: string;
+  mediaType: MediaType;
+}
+
+const DetailPage: React.FC = () => {
+  const { id, mediaType } = useParams<Params>();
+  const [data, setData] = useState<Movie | TVShow | null>(null);
+  const [cast, setCast] = useState<Cast[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const { favorites, addToFavorites, removeFromFavorites, isFavorite } =
     useMovieContext();
-  const [isFav, setIsFav] = useState(false);
+  const [isFav, setIsFav] = useState<boolean>(false);
 
   useEffect(() => {
-    const isAlreadyFav = isFavorite(parseInt(id), mediaType);
+    const isAlreadyFav = isFavorite(parseInt(id!), mediaType!);
     setIsFav(isAlreadyFav);
   }, [favorites, id, mediaType]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const details = await getDetails(mediaType, id);
+        const details = await getDetails(mediaType!, id!);
         setData(details);
       } catch (err) {
         setError(ERROR_MESSAGES.DETAILS_FAILED);
@@ -42,7 +48,7 @@ const DetailPage = () => {
 
     const fetchCast = async () => {
       try {
-        const credits = await getCredits(mediaType, id);
+        const credits = await getCredits(mediaType!, id!);
         setCast(credits.slice(0, 5));
       } catch (err) {
         setError(ERROR_MESSAGES.CREDITS_FAILED);
@@ -51,10 +57,10 @@ const DetailPage = () => {
 
     const fetchVideos = async () => {
       try {
-        const videoData = await getVideos(mediaType, id);
+        const videoData = await getVideos(mediaType!, id!);
         // 篩選 YouTube 平台的預告片
         const trailer = videoData.find(
-          video =>
+          (video: Video) =>
             video.site === 'YouTube' &&
             ['Trailer', 'Teaser'].includes(video.type)
         );
@@ -76,9 +82,9 @@ const DetailPage = () => {
   const handleFavoriteClick = e => {
     e.preventDefault();
     if (isFav) {
-      removeFromFavorites(data.id, mediaType);
+      removeFromFavorites(data!.id, mediaType!);
     } else {
-      addToFavorites(data, mediaType);
+      addToFavorites(data!, mediaType!);
     }
   };
 
@@ -115,8 +121,8 @@ const DetailPage = () => {
         }}
       >
         <div className="absolute inset-0 bg-overlay-gradient dark:bg-dark-overlay-gradient"></div>
-        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white text-white [text-shadow:_0_2px_10px_#4612a1]">
-          {data.title || data.name}
+        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#4612a1]">
+          {(data as Movie).title || (data as TVShow).name}
         </h1>
       </div>
 
@@ -226,7 +232,7 @@ const DetailPage = () => {
               <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                 📅 上映日期：
               </strong>
-              <span>{formatDate(data.release_date)}</span>
+              <span>{formatDate((data as Movie).release_date)}</span>
             </p>
           )}
           {mediaType === 'tv' && (
@@ -235,19 +241,19 @@ const DetailPage = () => {
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📅 首播日期：
                 </strong>
-                <span>{formatDate(data.first_air_date)}</span>
+                <span>{formatDate((data as TVShow).first_air_date)}</span>
               </p>
               <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 季數：
                 </strong>{' '}
-                {data.number_of_seasons} 季
+                {(data as TVShow).number_of_seasons} 季
               </p>
               <p className="mb-2 text-light dark:text-muted">
                 <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 集數：
                 </strong>{' '}
-                {data.number_of_episodes} 集
+                {(data as TVShow).number_of_episodes} 集
               </p>
             </>
           )}
