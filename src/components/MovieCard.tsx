@@ -1,14 +1,20 @@
 import { useMovieContext } from '../contexts/MovieContext';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { Movie, TVShow, MediaType } from '../types/tmdb';
 
-function MovieCard({ item, mediaType }) {
+interface MovieCardProps {
+  item: Movie | TVShow;
+  mediaType: MediaType;
+}
+
+function MovieCard({ item, mediaType }: MovieCardProps) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
   const favorite = isFavorite(item.id, mediaType);
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  function onFavoriteClick(e) {
+  function onFavoriteClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (favorite) {
       removeFromFavorites(item.id, mediaType);
@@ -17,9 +23,12 @@ function MovieCard({ item, mediaType }) {
     }
   }
 
-  const title = mediaType === 'movie' ? item.title : item.name;
+  const title =
+    mediaType === 'movie' ? (item as Movie).title : (item as TVShow).name;
   const releaseDate =
-    mediaType === 'movie' ? item.release_date : item.first_air_date;
+    mediaType === 'movie'
+      ? (item as Movie).release_date
+      : (item as TVShow).first_air_date;
 
   // 使用 IntersectionObserver 實現懶加載
   useEffect(() => {
@@ -51,7 +60,12 @@ function MovieCard({ item, mediaType }) {
     >
       <div className="relative aspect-[2/3] w-full">
         <img
-          src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+          ref={imgRef}
+          src={
+            item.poster_path
+              ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+              : '/placeholder.jpg'
+          }
           alt={title}
           className="w-full h-full rounded"
           loading="lazy"
@@ -74,9 +88,7 @@ function MovieCard({ item, mediaType }) {
         </p>
         <Link
           className="text-light dark:text-muted hover:text-hover dark:hover:text-hover"
-          to={`/movie-search-app/${
-            mediaType === 'movie' ? 'movie' : 'tv'
-          }/${item.id}`}
+          to={`/movie-search-app/${mediaType}/${item.id}`}
         >
           詳細資訊
         </Link>
