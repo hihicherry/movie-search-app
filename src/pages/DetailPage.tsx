@@ -25,6 +25,7 @@ const DetailPage: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showTrailer, setShowTrailer] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { favorites, addToFavorites, removeFromFavorites, isFavorite } =
@@ -88,6 +89,16 @@ const DetailPage: React.FC = () => {
     }
   };
 
+  const handleTrailerClick = () => {
+    if (videos.length > 0) {
+      setShowTrailer(true);
+    }
+  };
+
+  const closeTrailer = () => {
+    setShowTrailer(false);
+  };
+
   if (loading)
     return (
       <p className="text-center text-xl font-bold text-[#533670] dark:text-light animate-blink">
@@ -126,58 +137,51 @@ const DetailPage: React.FC = () => {
         </h1>
       </div>
 
-      {/* 預告片區域 */}
-      <div className="mt-6">
-        <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
-          預告片：
-        </h2>
-        <motion.div
-          className="relative rounded-lg overflow-hidden bg-card-gradient dark:bg-dark-card-gradient shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-300"
-          style={{ backdropFilter: 'blur(10px)' }}
-          whileHover={{ scale: 1.02, boxShadow: '0 6px 15px rgba(0,0,0,0.3)' }}
-          transition={{ duration: 0.3 }}
+      {/* 預告片按鈕區域 */}
+      <div className="mt-6 mb-2">
+        <button
+          className={`mt-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+            videos.length > 0
+              ? 'bg-[#7776B3] dark:bg-[#533670] text-white hover:bg-[#6665A2] dark:hover:bg-[#42255F]'
+              : 'bg-gray-400 dark:bg-gray-600 text-gray-200 cursor-not-allowed'
+          }`}
+          onClick={handleTrailerClick}
+          disabled={videos.length === 0}
         >
-          {videos.length > 0 ? (
+          {videos.length > 0 ? '觀看預告片 ▷' : '無預告片可觀看'}
+        </button>
+      </div>
+
+      {/* 預告片視窗 */}
+      {showTrailer && videos.length > 0 && (
+        <motion.div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="relative bg-card-gradient dark:bg-dark-card-gradient p-4 rounded-lg max-w-4xl w-full">
+            <button
+              className="absolute top-2 right-2 text-white text-2xl"
+              onClick={closeTrailer}
+            >
+              &times;
+            </button>
             <div
               className="relative w-full"
               style={{ paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}
             >
               <iframe
                 className="absolute top-0 left-0 w-full h-full border-2 border-[#7776B3] dark:border-[#533670] rounded-lg"
-                src={`https://www.youtube.com/embed/${videos[0].key}?rel=0&modestbranding=1`}
+                src={`https://www.youtube.com/embed/${videos[0].key}?rel=0&modestbranding=1&autoplay=1`}
                 title="預告片"
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
             </div>
-          ) : (
-            <div className="p-6 text-center bg-[#ffffff0d] dark:bg-[#1e1a3c33] rounded-lg">
-              <svg
-                className="w-12 h-12 mx-auto text-gray-500 dark:text-gray-300 mb-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <p className="text-light dark:text-muted text-lg">暫無預告片</p>
-            </div>
-          )}
+          </div>
         </motion.div>
-      </div>
+      )}
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-card-gradient dark:bg-dark-card-gradient text-white rounded-2xl p-6 shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-colors duration-300"
