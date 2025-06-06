@@ -123,7 +123,7 @@ const DetailPage: React.FC = () => {
         }}
       >
         <div className="absolute inset-0 bg-dark-overlay-gradient"></div>
-        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#4612a1]">
+        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#475569]">
           {(data as Movie).title || (data as TVShow).name}
         </h1>
       </div>

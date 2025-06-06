@@ -42,13 +42,9 @@ export default {
         'favorite-btn-hover':
           'linear-gradient(to bottom, #ffffff 5%, #ec6eff 95%)',
         'favorite-btn-active': 'linear-gradient(to right, #E8A9F8, #F5C6F8)',
-        'dark-favorite-btn-active':
-          'linear-gradient(to right, #E8B9FF, #F5D6FF)',
         'overlay-gradient': 'linear-gradient(to bottom, #4141431a, #414143cc)',
         'dark-overlay-gradient':
           'linear-gradient(to bottom, #1e1a3c1a, #1e1a3ccc)',
-        'filter-btn-hover': 'linear-gradient(to right, #80AFD1, #BCA9CF)',
-        'dark-filter-btn-hover': 'linear-gradient(to right, #95BFE1, #C8B9E2)',
       },
       fontFamily: {
         navbar: ['Georgia', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],

@@ -77,7 +77,7 @@ function Home() {
           onValueChange={setMediaType}
           aria-hidden={false}
         >
-          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white text-purple dark:text-blue border border-violet-300 dark:border-sky-400 rounded-full hover:bg-gray-100 focus:shadow-[0_0_0_2px_#000000] w-[98px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
+          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white text-purple dark:text-blue border border-violet-300 dark:border-sky-400 rounded-full hover:bg-gray-100 focus:shadow-[0_0_0_2px_#000000] w-[110px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
             <span className="mr-2.5">
               {mediaType === 'movie' ? '電影' : '電視劇'}
             </span>
@@ -151,7 +151,7 @@ function Home() {
                 initial={{ borderRadius: '8px' }}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: '0px 5px 5px #4612a1',
+                  boxShadow: '0px 5px 5px #475569',
                   borderRadius: '30px',
                   backgroundColor: '#7776B3',
                 }}
