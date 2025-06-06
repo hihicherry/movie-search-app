@@ -18,32 +18,32 @@ export default {
         'overlay-end': '#414143cc',
         'shadow-dark': '#4612a1',
         soft: '#F8D1FF',
-        'dark-bg': '#1E1A3C', // 深色模式背景
-        'dark-navbar-start': '#7BB5FF', // 深色模式漸層起始
-        'dark-navbar-end': '#D4A5FF', // 深色模式漸層結束
+        purple: '#494b80',
+        blue: '#1559ad',
       },
       backgroundImage: {
-        'navbar-gradient': 'linear-gradient(135deg, #60A5FA, #C084FC)',
-        'dark-navbar-gradient': 'linear-gradient(135deg, #7BB5FF, #D4A5FF)', // 深色模式漸層
-        'button-gradient': 'linear-gradient(to right, #518BD1, #A171D2)',
-        'dark-button-gradient': 'linear-gradient(to right, #6A9BE1, #B891E2)',
-        'card-gradient': 'linear-gradient(to bottom right, #9095FB, #B489FC)',
-        'dark-card-gradient':
-          'linear-gradient(to bottom right, #A5B0FF, #C8A5FF)',
-        'back-btn': 'linear-gradient(to right, #60A5FA, #9095FB)',
-        'dark-back-btn': 'linear-gradient(to right, #7BB5FF, #A5B0FF)',
-        'back-btn-hover': 'linear-gradient(to right, #9095FB, #A88DFC)',
-        'dark-back-btn-hover': 'linear-gradient(to right, #A5B0FF, #C8A5FF)',
-        'favorite-btn': 'linear-gradient(to right, #B489FC, #C084FC)',
-        'dark-favorite-btn': 'linear-gradient(to right, #C8A5FF, #D4A5FF)',
-        'favorite-btn-hover': 'linear-gradient(to right, #C084FC, #E8A9F8)',
-        'dark-favorite-btn-hover':
-          'linear-gradient(to right, #D4A5FF, #E8B9FF)',
+        'nav-gradient': 'linear-gradient(to bottom, #9095FB, #ffffff)',
+        'dark-nav-gradient': 'linear-gradient(to bottom, #57a3ff, #ffffff)',
+        'menu-gradient': 'linear-gradient(to bottom, #ffffff, #9095FB)',
+        'dark-menu-gradient': 'linear-gradient(to bottom, #ffffff, #57a3ff)',
+        'button-gradient':
+          'linear-gradient(to bottom, #FFFFFF 5%, #9095FB 95%)',
+        'dark-button-gradient':
+          'linear-gradient(to bottom, #ffffff 5%, #57a3ff 95%)',
+        'search-btn-hover':
+          'linear-gradient(to bottom, #FFFFFF 5%, #747af7 95%)',
+        'dark-search-btn-hover':
+          'linear-gradient(to bottom, #ffffff 5%, #308cfc 95%)',
+        'card-gradient': 'linear-gradient(to bottom, #9095FB, #ffffff)',
+        'dark-card-gradient': 'linear-gradient(to bottom, #57a3ff, #ffffff)',
+        'back-btn': 'linear-gradient(to bottom, #ffffff 5%, #94a3b8 95%)',
+        'back-btn-hover': 'linear-gradient(to bottom, #ffffff 5%, #64748b 95%)',
+        'favorite-btn': 'linear-gradient(to bottom, #ffffff 5%, #ed98fa 95%)',
+        'favorite-btn-hover':
+          'linear-gradient(to bottom, #ffffff 5%, #ec6eff 95%)',
         'favorite-btn-active': 'linear-gradient(to right, #E8A9F8, #F5C6F8)',
         'dark-favorite-btn-active':
           'linear-gradient(to right, #E8B9FF, #F5D6FF)',
-        'search-btn-hover': 'linear-gradient(to right, #8085F4, #BDAAF6)',
-        'dark-search-btn-hover': 'linear-gradient(to right, #95A0FF, #C8B5FF)',
         'overlay-gradient': 'linear-gradient(to bottom, #4141431a, #414143cc)',
         'dark-overlay-gradient':
           'linear-gradient(to bottom, #1e1a3c1a, #1e1a3ccc)',

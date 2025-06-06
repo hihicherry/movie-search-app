@@ -101,26 +101,17 @@ const DetailPage: React.FC = () => {
 
   if (loading)
     return (
-      <p className="text-center text-xl font-bold text-[#533670] dark:text-light animate-blink">
+      <p className="text-center text-xl font-bold text-purple dark:text-blue animate-blink">
         載入中...
       </p>
     );
   if (!data)
-    return (
-      <p className="text-center text-xl text-gray-500 dark:text-gray-300">
-        查無此內容
-      </p>
-    );
-  if (error)
-    return (
-      <p className="text-center text-xl text-red-500 dark:text-red-400">
-        {error}
-      </p>
-    );
+    return <p className="text-center text-xl text-gray-500">查無此內容</p>;
+  if (error) return <p className="text-center text-xl text-red-500">{error}</p>;
 
   return (
     <motion.div
-      className="p-6 bg-white dark:bg-dark-bg transition-colors duration-300"
+      className="p-6 bg-white transition-colors duration-300"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -131,19 +122,19 @@ const DetailPage: React.FC = () => {
           backgroundImage: `url('https://image.tmdb.org/t/p/w1280${data.backdrop_path}')`,
         }}
       >
-        <div className="absolute inset-0 bg-overlay-gradient dark:bg-dark-overlay-gradient"></div>
+        <div className="absolute inset-0 bg-dark-overlay-gradient"></div>
         <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#4612a1]">
           {(data as Movie).title || (data as TVShow).name}
         </h1>
       </div>
 
       {/* 預告片按鈕區域 */}
-      <div className="mt-6 mb-2">
+      <div className="mt-1 mb-2">
         <button
-          className={`mt-2 px-6 py-3 rounded-lg transition-all duration-300 ${
+          className={`mt-2 px-6 py-3 rounded-full transition-all duration-300 ${
             videos.length > 0
-              ? 'bg-[#7776B3] dark:bg-[#533670] text-white hover:bg-[#6665A2] dark:hover:bg-[#42255F]'
-              : 'bg-gray-400 dark:bg-gray-600 text-gray-200 cursor-not-allowed'
+              ? 'bg-button-gradient dark:bg-dark-button-gradient text-purple dark:text-blue border-2 border-violet-300 dark:border-sky-400 hover:bg-search-btn-hover dark:hover:bg-dark-search-btn-hover'
+              : 'bg-gray-400 dark:bg-gray-600 text-gray-200 border-2 border-gray-400 cursor-not-allowed'
           }`}
           onClick={handleTrailerClick}
           disabled={videos.length === 0}
@@ -192,12 +183,12 @@ const DetailPage: React.FC = () => {
           animate="fadeIn"
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-purple dark:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
             主要演員：
           </h2>
           <ul className="mt-2 space-y-1">
             {cast.map(actor => (
-              <li key={actor.id} className="text-light dark:text-muted">
+              <li key={actor.id} className="text-gray-800">
                 {actor.name} - {actor.character}
               </li>
             ))}
@@ -208,17 +199,15 @@ const DetailPage: React.FC = () => {
           animate="fadeIn"
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-soft text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-purple dark:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
             內容簡介：
           </h2>
-          <p className="mt-2 text-light dark:text-muted">
-            {data.overview || '無簡介'}
-          </p>
+          <p className="mt-2 text-gray-800">{data.overview || '無簡介'}</p>
         </motion.div>
 
-        <div className="flex flex-wrap gap-4 mt-4 text-light dark:text-muted">
+        <div className="flex flex-wrap gap-4 mt-4 text-gray-800">
           <p>
-            <span className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
               🎬 類型：
             </span>{' '}
             {data.genres?.map(genre => (
@@ -226,14 +215,14 @@ const DetailPage: React.FC = () => {
             ))}
           </p>
           <p>
-            <span className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
               ⭐ 評分：
             </span>{' '}
             {data.vote_average}
           </p>
           {mediaType === 'movie' && (
             <p>
-              <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                 📅 上映日期：
               </strong>
               <span>{formatDate((data as Movie).release_date)}</span>
@@ -241,20 +230,20 @@ const DetailPage: React.FC = () => {
           )}
           {mediaType === 'tv' && (
             <>
-              <p className="mb-2 text-light dark:text-muted">
-                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <p className="mb-2 text-gray-800">
+                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📅 首播日期：
                 </strong>
                 <span>{formatDate((data as TVShow).first_air_date)}</span>
               </p>
-              <p className="mb-2 text-light dark:text-muted">
-                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <p className="mb-2 text-gray-800">
+                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 季數：
                 </strong>{' '}
                 {(data as TVShow).number_of_seasons} 季
               </p>
-              <p className="mb-2 text-light dark:text-muted">
-                <strong className="font-bold text-soft [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <p className="mb-2 text-gray-800">
+                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
                   📺 集數：
                 </strong>{' '}
                 {(data as TVShow).number_of_episodes} 集
@@ -265,7 +254,7 @@ const DetailPage: React.FC = () => {
       </div>
       <div className="flex gap-2 mt-2">
         <button
-          className={`bg-favorite-btn dark:bg-dark-favorite-btn text-white px-6 py-3 rounded-lg transition-all duration-300 hover:bg-favorite-btn-hover dark:hover:bg-dark-favorite-btn-hover ${
+          className={`bg-favorite-btn dark:bg-dark-favorite-btn text-gray-800 border-2 border-fuchsia-400 px-6 py-3 rounded-full transition-all duration-300 hover:bg-favorite-btn-hover dark:hover:bg-dark-favorite-btn-hover ${
             isFav
               ? 'bg-favorite-btn-active dark:bg-dark-favorite-btn-active animate-pulse'
               : ''
@@ -275,7 +264,7 @@ const DetailPage: React.FC = () => {
           {isFav ? '♡ 從我的最愛移除' : '♥ 加入我的最愛'}
         </button>
         <button
-          className="bg-back-btn dark:bg-dark-back-btn text-white px-4 py-2 rounded-lg hover:bg-back-btn-hover dark:hover:bg-dark-back-btn-hover"
+          className="bg-back-btn text-gray-800 px-4 py-2 rounded-full border-2 border-gray-600 hover:bg-back-btn-hover"
           onClick={() => navigate(-1)}
         >
           <span>←</span> 返回

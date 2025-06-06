@@ -13,29 +13,32 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-navbar-gradient dark:bg-dark-navbar-gradient p-4 md:px-6 flex justify-between items-center shadow-[0_5px_5px_-5px_#414040] h-[50px] font-navbar text-white transition-colors duration-300">
+    <nav className="bg-nav-gradient dark:bg-dark-nav-gradient p-4 md:px-6 flex justify-between items-center h-[50px] font-navbar text-purple dark:text-blue transition-colors duration-300">
       <div className="text-2xl font-bold">
-        <Link className="hover:text-white" to="/movie-search-app/">
+        <Link
+          className="hover:text-violet-500 dark:hover:text-sky-500"
+          to="/movie-search-app/"
+        >
           MovieSearch
         </Link>
       </div>
       {/* 桌面端導航 */}
       <div className="hidden md:flex gap-2 items-center ">
         <Link
-          className="text-light text-base px-4 py-2 rounded hover:text-hover relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-hover after:transition-all after:duration-300 hover:after:w-full"
+          className="text-base px-4 py-2 rounded hover:text-violet-500 dark:hover:text-sky-500 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-violet-500 dark:after:bg-sky-500 after:transition-all after:duration-300 hover:after:w-full"
           to="/movie-search-app/"
         >
           Home
         </Link>
         <Link
-          className="text-light text-base px-4 py-2 rounded hover:text-hover relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-hover after:transition-all after:duration-300 hover:after:w-full"
+          className="text-base px-4 py-2 rounded hover:text-violet-500 dark:hover:text-sky-500 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-violet-500 dark:after:bg-sky-500 after:transition-all after:duration-300 hover:after:w-full"
           to="/movie-search-app/favorites"
         >
           Favorites
         </Link>
         <button
           onClick={toggleTheme}
-          className="text-light text-xl px-2 py-2 rounded hover:text-hover"
+          className="text-xl px-2 py-2 rounded hover:text-violet-500 dark:hover:text-sky-500"
           aria-label={theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'}
         >
           {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
@@ -45,7 +48,7 @@ function NavBar() {
       <div className="md:hidden flex items-center">
         <button
           onClick={toggleMenu}
-          className="text-light text-xl px-2 py-2 rounded hover:text-hover"
+          className="text-purple dark:text-blue text-xl px-2 py-2 rounded hover:text-fuchsia-500 dark:hover:text-sky-500"
           aria-label={isMenuOpen ? '關閉選單' : '開啟選單'}
         >
           <HamburgerMenuIcon />
@@ -58,18 +61,18 @@ function NavBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[50px] left-0 w-full bg-navbar-gradient dark:bg-dark-navbar-gradient shadow-md md:hidden"
+            className="absolute top-[50px] left-0 w-full bg-menu-gradient dark:bg-dark-menu-gradient shadow-md md:hidden"
           >
             <div className="flex flex-col p-4 gap-2">
               <Link
-                className="text-light text-base px-4 py-2 rounded hover:text-hover"
+                className="text-purple dark:text-blue text-base px-4 py-2 rounded hover:text-fuchsia-500 dark:hover:text-sky-500"
                 to="/movie-search-app/"
                 onClick={toggleMenu}
               >
                 Home
               </Link>
               <Link
-                className="text-light text-base px-4 py-2 rounded hover:text-hover"
+                className="text-purple dark:text-blue text-base px-4 py-2 rounded hover:text-fuchsia-500 dark:hover:text-sky-500"
                 to="/movie-search-app/favorites"
                 onClick={toggleMenu}
               >
@@ -80,7 +83,7 @@ function NavBar() {
                   toggleTheme();
                   toggleMenu();
                 }}
-                className="text-light text-base px-4 py-2 rounded hover:text-hover text-left"
+                className="text-purple dark:text-blue text-base px-4 py-2 rounded hover:text-fuchsia-500 dark:hover:text-sky-500 text-left"
                 aria-label={
                   theme === 'dark' ? '切換到淺色模式' : '切換到深色模式'
                 }

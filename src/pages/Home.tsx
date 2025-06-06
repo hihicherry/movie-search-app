@@ -77,7 +77,7 @@ function Home() {
           onValueChange={setMediaType}
           aria-hidden={false}
         >
-          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white dark:bg-gray-800  dark:text-light text-button-start border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-100 dark:hover:bg-gray-70 focus:shadow-[0_0_0_2px_#000000] w-[98px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
+          <Select.Trigger className="flex items-center px-3 py-2.5 bg-white text-purple dark:text-blue border border-violet-300 dark:border-sky-400 rounded-full hover:bg-gray-100 focus:shadow-[0_0_0_2px_#000000] w-[98px] shadow-[0_2px_10px_rgba(0,0,0,0.1)]">
             <span className="mr-2.5">
               {mediaType === 'movie' ? '電影' : '電視劇'}
             </span>
@@ -85,16 +85,16 @@ function Home() {
               <ChevronDownIcon />
             </Select.Icon>
           </Select.Trigger>
-          <Select.Content className="w-[98px] bg-white dark:bg-gray-800 rounded shadow-[0_0_10px_rgba(0,0,0,0.1)] z-[1]">
+          <Select.Content className="w-[98px] bg-white rounded shadow-[0_0_10px_rgba(0,0,0,0.1)] z-[1]">
             <Select.Item
               value="movie"
-              className="p-2 rounded cursor-pointer hover:bg-button-start hover:text-white dark:hover:bg-gray-700 dark:hover:text-light"
+              className="p-2 rounded cursor-pointer hover:bg-purple dark:hover:bg-blue hover:text-white"
             >
               <Select.ItemText>電影</Select.ItemText>
             </Select.Item>
             <Select.Item
               value="tv"
-              className="p-2 rounded cursor-pointer hover:bg-button-start hover:text-white dark:hover:bg-gray-700 dark:hover:text-light"
+              className="p-2 rounded cursor-pointer hover:bg-purple dark:hover:bg-blue hover:text-white"
             >
               <Select.ItemText>電視劇</Select.ItemText>
             </Select.Item>
@@ -105,13 +105,13 @@ function Home() {
   };
 
   return (
-    <div className="py-4 w-full box-border bg-white dark:bg-dark-bg transition-colors duration-300">
+    <div className="py-4 w-full box-border transition-colors duration-300">
       <form
         className="max-w-[600px] mx-auto mb-8 flex gap-4 px-4 flex-wrap sm:flex-row items-center"
         onSubmit={handleSearch}
       >
         <input
-          className="flex-1 px-4 py-3 border-none rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-light shadow-[0_3px_3px_-2px_#452d7acd] text-base focus:outline-none focus:ring-2 focus:ring-[#7776B3] sm:h-[45px]"
+          className="flex-1 px-4 py-3 border-2 border-violet-300 dark:border-sky-400 rounded-full bg-white shadow-[0_3px_3px_-2px_#452d7acd] text-base focus:outline-none focus:ring-2 focus:ring-[#7776B3] dark:focus:ring-[#60A5FA] sm:h-[45px]"
           type="text"
           placeholder="請輸入欲查詢的電影或電視劇名稱"
           value={searchQuery}
@@ -121,7 +121,7 @@ function Home() {
         <div className="flex gap-2 sm:gap-4 justify-start w-full sm:w-auto">
           <MediaSelect />
           <button
-            className="px-6 py-2.5 bg-button-gradient dark:bg-dark-button-gradient text-white rounded transition-all duration-300 hover:bg-search-btn-hover dark:hover:bg-dark-search-btn-hover shadow-[0_3px_3px_-2px_#444444] flex-shrink-0 sm:h-[45px]"
+            className="px-6 bg-button-gradient dark:bg-dark-button-gradient text-purple dark:text-blue border-2 border-violet-300 dark:border-sky-400 rounded-full transition-all duration-300 hover:bg-search-btn-hover dark:hover:bg-dark-search-btn-hover shadow-[0_3px_3px_-2px_#444444] flex-shrink-0 sm:h-[45px]"
             type="submit"
             aria-label="執行搜尋"
           >
@@ -151,8 +151,8 @@ function Home() {
                 initial={{ borderRadius: '8px' }}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: '0px 5px 15px #4612a1',
-                  borderRadius: '10px',
+                  boxShadow: '0px 5px 5px #4612a1',
+                  borderRadius: '30px',
                   backgroundColor: '#7776B3',
                 }}
                 transition={{ duration: 0.3 }}

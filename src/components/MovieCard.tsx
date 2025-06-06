@@ -55,10 +55,10 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
 
   return (
     <div
-      className="relative rounded-lg bg-card-gradient dark:bg-dark-card-gradient h-full flex flex-col shadow-[0_4px_10px_rgba(0,0,0,0.401)] transition-colors duration-300"
+      className="relative rounded-xl bg-card-gradient dark:bg-dark-card-gradient h-full flex flex-col shadow-lg border-2 border-violet-300 dark:border-sky-400 transition-colors duration-300"
       style={{ backdropFilter: 'blur(10px)' }}
     >
-      <div className="relative aspect-[2/3] w-full">
+      <div className="relative aspect-[2/3] w-full p-2">
         <img
           ref={imgRef}
           src={
@@ -70,10 +70,10 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
           className="w-full h-full rounded"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-overlay-gradient dark:bg-dark-overlay-gradient opacity-0 hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+        <div className="absolute inset-0  opacity-0 hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
           <button
-            className={`absolute top-4 right-4 text-white text-xl p-2 bg-[#00000080] rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-200 hover:bg-[#302626cc] ${
-              favorite ? 'text-[#ff4757]' : ''
+            className={`absolute top-4 right-4 text-white text-xl p-2 bg-[#00000080] rounded-full border-2 border-white w-10 h-10 flex items-center justify-center transition-colors duration-200 hover:bg-[#302626cc] hover:border-gray-300 ${
+              favorite ? '!text-[#ef4444] !border-red-500' : ''
             }`}
             onClick={onFavoriteClick}
           >
@@ -82,12 +82,12 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
         </div>
       </div>
       <div className="p-4 flex-1 flex flex-col gap-2">
-        <h3 className="text-base text-light dark:text-muted m-0">{title}</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+        <h3 className="font-bold text-purple dark:text-blue m-0">{title}</h3>
+        <p className="text-sm text-gray-600">
           {releaseDate ? releaseDate.slice(0, 4) : '未知'}
         </p>
         <Link
-          className="text-light dark:text-muted hover:text-hover dark:hover:text-hover"
+          className="text-purple dark:text-blue hover:text-violet-500 dark:hover:text-sky-500"
           to={`/movie-search-app/${mediaType}/${item.id}`}
         >
           詳細資訊
