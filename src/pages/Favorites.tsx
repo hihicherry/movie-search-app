@@ -63,14 +63,14 @@ function Favorites() {
       <h2 className="mb-4 font-pixel text-center text-4xl text-purple theme-blue:text-blue">
         我的最愛
       </h2>
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex justify-center gap-3 mb-8">
         {filterButtons.map(btn => (
           <button
             key={btn.value}
-            className={`px-2 py-2 rounded-sm transition-all duration-300 ${
+            className={`px-3 py-1 font-pixel text-sm rounded-sm transition-all duration-300 ${
               filter === btn.value
-                ? 'text-purple dark:text-blue bg-search-btn-hover dark:bg-dark-search-btn-hover border-2 border-violet-300 dark:border-sky-400'
-                : 'text-gray-700 bg-back-btn hover:bg-button-gradient dark:hover:bg-dark-button-gradient border-2 border-gray-400 hover:scale-105 hover:text-purple dark:hover:text-blue hover:border-violet-300 dark:hover:border-sky-400'
+                ? 'text-purple theme-blue:text-blue bg-violet-200 theme-blue:bg-sky-200 border-2 border-t-white border-l-white border-r-violet-400 border-b-violet-400 theme-blue:border-r-sky-400 theme-blue:border-b-sky-400'
+                : 'text-gray-700 bg-gray-300 border-2 border-t-white border-l-white border-r-gray-400 border-b-gray-400 hover:scale-105 hover:text-purple dark:hover:text-blue hover:border-t-white hover:border-l-white hover:border-violet-300 dark:hover:border-sky-400 hover:bg-violet-300 theme-blue:hover:bg-sky-300 hover:border-r-violet-400 hover:border-b-violet-400 theme-blue:hover:border-r-sky-400 theme-blue:hover:border-b-sky-400 hover:animate-flicker'
             }`}
             onClick={() => setFilter(btn.value)}
           >
