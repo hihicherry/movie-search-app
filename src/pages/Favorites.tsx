@@ -21,17 +21,17 @@ function Favorites() {
 
   const renderFavorites = () => (
     <div className="p-8 w-full box-border bg-white transition-colors duration-300">
-      <h2 className="mb-4 text-center text-4xl text-purple dark:text-blue">
+      <h2 className="mb-4 font-pixel text-center text-4xl text-purple theme-blue:text-blue">
         我的最愛
       </h2>
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex justify-center gap-3 mb-8">
         {filterButtons.map(btn => (
           <button
             key={btn.value}
-            className={`px-4 py-2 rounded-full transition-all duration-300 ${
+            className={`px-3 py-1 font-pixel text-sm rounded-sm transition-all duration-300 ${
               filter === btn.value
-                ? 'text-purple dark:text-blue bg-search-btn-hover dark:bg-dark-search-btn-hover border-2 border-violet-300 dark:border-sky-400 scale-105'
-                : 'text-gray-700 bg-back-btn hover:bg-button-gradient dark:hover:bg-dark-button-gradient border-2 border-gray-400 hover:scale-105 hover:text-purple dark:hover:text-blue hover:border-violet-300 dark:hover:border-sky-400'
+                ? 'text-purple theme-blue:text-blue bg-violet-200 theme-blue:bg-sky-200 border-2 border-t-white border-l-white border-r-violet-400 border-b-violet-400 theme-blue:border-r-sky-400 theme-blue:border-b-sky-400'
+                : 'text-gray-700 bg-gray-300 border-2 border-t-white border-l-white border-r-gray-400 border-b-gray-400 hover:scale-105 hover:text-purple dark:hover:text-blue hover:border-t-white hover:border-l-white hover:border-violet-300 dark:hover:border-sky-400 hover:bg-violet-300 theme-blue:hover:bg-sky-300 hover:border-r-violet-400 hover:border-b-violet-400 theme-blue:hover:border-r-sky-400 theme-blue:hover:border-b-sky-400 hover:animate-flicker'
             }`}
             onClick={() => setFilter(btn.value)}
           >
@@ -43,13 +43,11 @@ function Favorites() {
         {filteredFavorites.map(item => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, borderRadius: '8px' }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{
               scale: 1.05,
-              boxShadow: '0px 5px 15px #4612a1',
-              borderRadius: '10px',
-              backgroundColor: '#7776B3',
+              boxShadow: '0px 5px 5px #475569',
             }}
             transition={{ duration: 0.3 }}
           >
@@ -62,16 +60,16 @@ function Favorites() {
 
   const renderEmpty = () => (
     <div className="p-8 w-full box-border bg-white transition-colors duration-300">
-      <h2 className="mb-4 text-center text-4xl text-purple dark:text-blue">
+      <h2 className="mb-4 font-pixel text-center text-4xl text-purple theme-blue:text-blue">
         我的最愛
       </h2>
       <div className="flex justify-center gap-4 mb-8">
         {filterButtons.map(btn => (
           <button
             key={btn.value}
-            className={`px-4 py-2 rounded-full transition-all duration-300 ${
+            className={`px-2 py-2 rounded-sm transition-all duration-300 ${
               filter === btn.value
-                ? 'text-purple dark:text-blue bg-search-btn-hover dark:bg-dark-search-btn-hover border-2 border-violet-300 dark:border-sky-400 scale-105'
+                ? 'text-purple dark:text-blue bg-search-btn-hover dark:bg-dark-search-btn-hover border-2 border-violet-300 dark:border-sky-400'
                 : 'text-gray-700 bg-back-btn hover:bg-button-gradient dark:hover:bg-dark-button-gradient border-2 border-gray-400 hover:scale-105 hover:text-purple dark:hover:text-blue hover:border-violet-300 dark:hover:border-sky-400'
             }`}
             onClick={() => setFilter(btn.value)}
@@ -80,7 +78,7 @@ function Favorites() {
           </button>
         ))}
       </div>
-      <div className="text-center bg-[#ffffff0d] dark:bg-[#1e1a3c33] rounded-xl mx-auto my-8 max-w-[600px]">
+      <div className="text-center rounded-xl mx-auto my-8 max-w-[600px]">
         <h2 className="mb-4 text-3xl text-navbar-start dark:text-dark-navbar-start">
           {filter === 'all'
             ? '尚未新增任何作品至我的最愛'

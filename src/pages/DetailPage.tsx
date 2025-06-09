@@ -101,13 +101,18 @@ const DetailPage: React.FC = () => {
 
   if (loading)
     return (
-      <p className="text-center text-xl font-bold text-purple dark:text-blue animate-blink">
+      <p className="text-center text-xl font-bold text-purple theme-blue:text-blue animate-blink">
         載入中...
       </p>
     );
   if (!data)
-    return <p className="text-center text-xl text-gray-500">查無此內容</p>;
-  if (error) return <p className="text-center text-xl text-red-500">{error}</p>;
+    return (
+      <p className="font-pixel text-center text-xl text-gray-500">查無此內容</p>
+    );
+  if (error)
+    return (
+      <p className="font-pixel text-center text-xl text-red-500">{error}</p>
+    );
 
   return (
     <motion.div
@@ -122,8 +127,8 @@ const DetailPage: React.FC = () => {
           backgroundImage: `url('https://image.tmdb.org/t/p/w1280${data.backdrop_path}')`,
         }}
       >
-        <div className="absolute inset-0 bg-dark-overlay-gradient"></div>
-        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-bold text-white [text-shadow:_0_2px_10px_#475569]">
+        <div className="absolute inset-0"></div>
+        <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-pixel text-white [text-shadow:_0_2px_10px_#475569]">
           {(data as Movie).title || (data as TVShow).name}
         </h1>
       </div>
@@ -131,10 +136,10 @@ const DetailPage: React.FC = () => {
       {/* 預告片按鈕區域 */}
       <div className="mt-1 mb-2">
         <button
-          className={`mt-2 px-6 py-3 rounded-full transition-all duration-300 ${
+          className={`mt-2 px-3 py-2 font-pixel rounded-sm transition-all duration-300 ${
             videos.length > 0
-              ? 'bg-button-gradient dark:bg-dark-button-gradient text-purple dark:text-blue border-2 border-violet-300 dark:border-sky-400 hover:bg-search-btn-hover dark:hover:bg-dark-search-btn-hover'
-              : 'bg-gray-400 dark:bg-gray-600 text-gray-200 border-2 border-gray-400 cursor-not-allowed'
+              ? 'bg-violet-200 theme-blue:bg-sky-200 text-purple theme-blue:text-blue border-2 border-t-white border-l-white border-r-violet-400 border-b-violet-400 theme-blue:border-r-sky-400 theme-blue:border-b-sky-400 hover:bg-violet-300 theme-blue:hover:bg-sky-300 hover:animate-flicker'
+              : 'bg-gray-400 text-gray-200 border-2  border-t-white border-l-white border-b-gray-500 border-r-gray-500 cursor-not-allowed'
           }`}
           onClick={handleTrailerClick}
           disabled={videos.length === 0}
@@ -175,7 +180,7 @@ const DetailPage: React.FC = () => {
       )}
 
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-card-gradient dark:bg-dark-card-gradient text-white rounded-2xl p-6 shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-colors duration-300"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 font-pixel bg-theme-purple-card-gradient theme-blue:bg-theme-blue-card-gradient rounded-2xl p-6 shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-colors duration-300"
         style={{ backdropFilter: 'blur(10px)' }}
       >
         <motion.div
@@ -183,7 +188,7 @@ const DetailPage: React.FC = () => {
           animate="fadeIn"
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-purple dark:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-purple theme-blue:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
             主要演員：
           </h2>
           <ul className="mt-2 space-y-1">
@@ -199,7 +204,7 @@ const DetailPage: React.FC = () => {
           animate="fadeIn"
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-purple dark:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+          <h2 className="text-purple theme-blue:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
             內容簡介：
           </h2>
           <p className="mt-2 text-gray-800">{data.overview || '無簡介'}</p>
@@ -207,7 +212,7 @@ const DetailPage: React.FC = () => {
 
         <div className="flex flex-wrap gap-4 mt-4 text-gray-800">
           <p>
-            <span className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
               🎬 類型：
             </span>{' '}
             {data.genres?.map(genre => (
@@ -215,14 +220,14 @@ const DetailPage: React.FC = () => {
             ))}
           </p>
           <p>
-            <span className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+            <span className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
               ⭐ 評分：
             </span>{' '}
             {data.vote_average}
           </p>
           {mediaType === 'movie' && (
             <p>
-              <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+              <strong className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
                 📅 上映日期：
               </strong>
               <span>{formatDate((data as Movie).release_date)}</span>
@@ -231,19 +236,19 @@ const DetailPage: React.FC = () => {
           {mediaType === 'tv' && (
             <>
               <p className="mb-2 text-gray-800">
-                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
                   📅 首播日期：
                 </strong>
                 <span>{formatDate((data as TVShow).first_air_date)}</span>
               </p>
               <p className="mb-2 text-gray-800">
-                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
                   📺 季數：
                 </strong>{' '}
                 {(data as TVShow).number_of_seasons} 季
               </p>
               <p className="mb-2 text-gray-800">
-                <strong className="font-bold text-purple dark:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.158)]">
+                <strong className="font-bold text-purple theme-blue:text-blue [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
                   📺 集數：
                 </strong>{' '}
                 {(data as TVShow).number_of_episodes} 集
@@ -254,9 +259,9 @@ const DetailPage: React.FC = () => {
       </div>
       <div className="flex gap-2 mt-2">
         <button
-          className={`bg-favorite-btn dark:bg-dark-favorite-btn text-gray-800 border-2 border-fuchsia-400 px-6 py-3 rounded-full transition-all duration-300 hover:bg-favorite-btn-hover dark:hover:bg-dark-favorite-btn-hover ${
+          className={`mt-2 font-pixel bg-fuchsia-200 text-gray-700 border-2 border-t-white border-l-white border-r-fuchsia-400 border-b-fuchsia-400 px-3 py-2 rounded-sm transition-all duration-300 hover:bg-fuchsia-300 hover:animate-flicker ${
             isFav
-              ? 'bg-favorite-btn-active dark:bg-dark-favorite-btn-active animate-pulse'
+              ? 'bg-fuchsia-100 border-r-fuchsia-300 border-b-fuchsia-300 hover:bg-fuchsia-200'
               : ''
           }`}
           onClick={handleFavoriteClick}
@@ -264,7 +269,7 @@ const DetailPage: React.FC = () => {
           {isFav ? '♡ 從我的最愛移除' : '♥ 加入我的最愛'}
         </button>
         <button
-          className="bg-back-btn text-gray-800 px-4 py-2 rounded-full border-2 border-gray-600 hover:bg-back-btn-hover"
+          className="mt-2 font-pixel bg-gray-200 text-gray-700 px-3 py-2 rounded-sm border-2 border-t-white border-l-white border-r-gray-400 border-b-gray-400 hover:bg-gray-300 hover:animate-flicker"
           onClick={() => navigate(-1)}
         >
           <span>←</span> 返回

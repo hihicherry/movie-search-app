@@ -12,7 +12,7 @@ interface MovieContextType {
   addToFavorites: (item: Movie | TVShow, mediaType: MediaType) => void;
   removeFromFavorites: (itemId: number, mediaType: MediaType) => void;
   isFavorite: (itemId: number, mediaType: MediaType) => boolean;
-  theme: 'light' | 'dark';
+  theme: 'purple' | 'blue';
   toggleTheme: () => void;
 }
 
@@ -38,8 +38,8 @@ export const MovieProvider: React.FC<MovieProviderProps> = ({ children }) => {
   });
 
   // 初始化主題，從 localStorage 讀取或預設為淺色
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
+  const [theme, setTheme] = useState<'purple' | 'blue'>(() => {
+    return (localStorage.getItem('theme') as 'purple' | 'blue') || 'purple';
   });
 
   // 監聽favorites變化，存入localStorage
@@ -50,14 +50,14 @@ export const MovieProvider: React.FC<MovieProviderProps> = ({ children }) => {
   // 監聽 theme 變化，存入 localStorage 並更新 document class
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.remove('theme-purple', 'theme-blue');
+    document.documentElement.classList.add(`theme-${theme}`);
   }, [theme]);
 
-  // 切換主題（light/dark）
+  // 切換主題（purple/blue）
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme(prev => (prev === 'purple' ? 'blue' : 'purple'));
   };
-
   // 添加到收藏清單，確保不重複
   const addToFavorites = (item: Movie | TVShow, mediaType: MediaType) => {
     setFavorites(prev => {

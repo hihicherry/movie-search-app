@@ -1,3 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* 定義俐方體 11 號字體 */
+@font-face {
+  font-family: 'pixel';
+  src: url('/fonts/Cubic_11.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-flicker {
+  animation: flicker 0.2s infinite !important;
+}
+.hover\:animate-flicker:hover {
+  animation: flicker 0.2s infinite;
+}
