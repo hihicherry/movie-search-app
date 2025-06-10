@@ -156,7 +156,7 @@ const DetailPage: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="relative bg-card-gradient dark:bg-dark-card-gradient p-4 rounded-lg max-w-4xl w-full">
+          <div className="relative bg-purple-gradient theme-blue:bg-blue-gradient p-4 rounded-lg max-w-4xl w-full">
             <button
               className="absolute top-2 right-2 text-white text-2xl"
               onClick={closeTrailer}

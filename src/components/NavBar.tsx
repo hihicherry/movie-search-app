@@ -13,7 +13,7 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-theme-purple-nav-gradient theme-blue:bg-theme-blue-nav-gradient p-4 md:px-6 flex justify-between items-center h-[50px] font-navbar text-purple theme-blue:text-blue transition-colors duration-300">
+    <nav className="bg-theme-purple-nav-gradient theme-blue:bg-theme-blue-nav-gradient p-4 md:px-6 flex justify-between items-center h-[50px] font-navbar text-purple theme-blue:text-blue transition-colors duration-300 z-50">
       <div className="text-l font-bold">
         <Link
           className="hover:text-violet-500 theme-blue:hover:text-sky-500"
@@ -61,7 +61,7 @@ function NavBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[50px] left-0 w-full bg-purple-gradient theme-blue:bg-blue-gradient shadow-md md:hidden"
+            className="absolute top-[50px] left-0 w-full bg-purple-gradient theme-blue:bg-blue-gradient shadow-md md:hidden z-50"
           >
             <div className="flex flex-col p-4 gap-2">
               <Link
