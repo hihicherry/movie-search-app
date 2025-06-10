@@ -78,8 +78,8 @@ function Favorites() {
           </button>
         ))}
       </div>
-      <div className="text-center rounded-xl mx-auto my-8 max-w-[600px]">
-        <h2 className="mb-4 text-3xl text-navbar-start dark:text-dark-navbar-start">
+      <div className="font-pixel text-center rounded-xl mx-auto my-8 max-w-[600px]">
+        <h2 className="mb-4 text-3xl font-bold text-violet-500 theme-blue:text-sky-500">
           {filter === 'all'
             ? '尚未新增任何作品至我的最愛'
             : `尚未新增任何${filter === 'movie' ? '電影' : '電視劇'}至我的最愛`}
