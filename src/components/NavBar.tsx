@@ -61,7 +61,7 @@ function NavBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-[50px] left-0 w-full bg-theme-purple-menu-gradient theme-blue:bg-theme-blue-menu-gradient shadow-md md:hidden"
+            className="absolute top-[50px] left-0 w-full bg-purple-gradient theme-blue:bg-blue-gradient shadow-md md:hidden"
           >
             <div className="flex flex-col p-4 gap-2">
               <Link

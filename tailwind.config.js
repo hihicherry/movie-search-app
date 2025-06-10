@@ -24,7 +24,7 @@ export default {
       backgroundImage: {
         // Purple 主題的背景漸層
         'theme-purple-nav-gradient':
-          'linear-gradient(to bottom, #9095FB, #ffffff)',
+          'linear-gradient(to bottom, #9095FB, #f5f3ff)',
         'theme-purple-menu-gradient':
           'linear-gradient(to bottom, #ffffff, #9095FB)',
         'theme-purple-button-gradient':
@@ -38,7 +38,7 @@ export default {
 
         // Blue 主題的背景漸層
         'theme-blue-nav-gradient':
-          'linear-gradient(to bottom, #57a3ff, #ffffff)',
+          'linear-gradient(to bottom, #57a3ff, #f0f9ff)',
         'theme-blue-menu-gradient':
           'linear-gradient(to bottom, #ffffff, #57a3ff)',
         'theme-blue-button-gradient':
@@ -57,6 +57,10 @@ export default {
         'favorite-btn-hover':
           'linear-gradient(to bottom, #ffffff 5%, #ec6eff 95%)',
         'favorite-btn-active': 'linear-gradient(to right, #E8A9F8, #F5C6F8)',
+
+        //背景漸層
+        'purple-gradient': 'linear-gradient(to bottom right, #f5f3ff, #faf5ff)',
+        'blue-gradient': 'linear-gradient(to bottom right, #f0f9ff, #eff6ff)',
       },
       animation: {
         pulse: 'pulse 1.5s infinite',

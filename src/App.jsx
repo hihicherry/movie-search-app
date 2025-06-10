@@ -9,7 +9,7 @@ import './css/index.css';
 function App() {
   return (
     <MovieProvider>
-      <div className="min-h-screen bg-white transition-colors duration-300">
+      <div className="min-h-screen bg-purple-gradient theme-blue:bg-blue-gradient transition-colors duration-300">
         <NavBar />
         <main>
           <Routes>

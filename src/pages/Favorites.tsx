@@ -20,7 +20,7 @@ function Favorites() {
   ];
 
   const renderFavorites = () => (
-    <div className="p-8 w-full box-border bg-white transition-colors duration-300">
+    <div className="p-8 w-full box-border transition-colors duration-300">
       <h2 className="mb-4 font-pixel text-center text-4xl text-purple theme-blue:text-blue">
         我的最愛
       </h2>
@@ -59,7 +59,7 @@ function Favorites() {
   );
 
   const renderEmpty = () => (
-    <div className="p-8 w-full box-border bg-white transition-colors duration-300">
+    <div className="p-8 w-full box-border transition-colors duration-300">
       <h2 className="mb-4 font-pixel text-center text-4xl text-purple theme-blue:text-blue">
         我的最愛
       </h2>
@@ -85,7 +85,9 @@ function Favorites() {
             : `尚未新增任何${filter === 'movie' ? '電影' : '電視劇'}至我的最愛`}
         </h2>
         <p className="text-gray-500 dark:text-gray-300 text-lg leading-6">
-          開始加入你喜愛的{filter === 'movie' ? '電影' : '電視劇'}吧！
+          {filter === 'all'
+            ? '開始加入你喜愛的作品吧！'
+            : `開始加入你喜愛的${filter === 'movie' ? '電影' : '電視劇'}吧！`}
         </p>
       </div>
     </div>

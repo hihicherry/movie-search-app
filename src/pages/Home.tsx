@@ -158,7 +158,7 @@ function Home() {
               </motion.div>
             ))
           ) : (
-            <div className="text-center text-gray-500 theme-blue:text-gray-300">
+            <div className="font-pixel text-center text-gray-500 theme-blue:text-gray-300">
               沒有搜尋結果
             </div>
           )}

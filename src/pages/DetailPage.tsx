@@ -101,7 +101,7 @@ const DetailPage: React.FC = () => {
 
   if (loading)
     return (
-      <p className="text-center text-xl font-bold text-purple theme-blue:text-blue animate-blink">
+      <p className="text-center text-xl font-pixel font-bold text-purple theme-blue:text-blue animate-blink">
         載入中...
       </p>
     );
@@ -116,7 +116,7 @@ const DetailPage: React.FC = () => {
 
   return (
     <motion.div
-      className="p-6 bg-white transition-colors duration-300"
+      className="p-6 transition-colors duration-300"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
