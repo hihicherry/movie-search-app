@@ -7,6 +7,7 @@ export interface Movie {
   overview?: string;
   vote_average?: number;
   genres?: { id: number; name: string }[];
+  mediaType: MediaType;
 }
 
 export interface TVShow {
@@ -20,6 +21,7 @@ export interface TVShow {
   genres?: { id: number; name: string }[];
   number_of_seasons?: number;
   number_of_episodes?: number;
+  mediaType: MediaType;
 }
 
 export interface Cast {

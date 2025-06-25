@@ -1,10 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, ReactNode } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { addToFavorites, removeFromFavorites } from '../store/favoritesSlice';
+import { toggleTheme } from '../store/themeSlice';
 import { Movie, TVShow, MediaType } from '../types/tmdb';
 
 interface MovieContextType {
@@ -31,68 +29,38 @@ interface MovieProviderProps {
 }
 
 export const MovieProvider: React.FC<MovieProviderProps> = ({ children }) => {
-  // 初始化收藏清單，從 localStorage 讀取或預設為空陣列
-  const [favorites, setFavorites] = useState<(Movie | TVShow)[]>(() => {
-    const storedFavs = localStorage.getItem('favorites');
-    return storedFavs ? JSON.parse(storedFavs) : [];
-  });
+  const dispatch = useDispatch();
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
+  const theme = useSelector((state: RootState) => state.theme.theme);
 
-  // 初始化主題，從 localStorage 讀取或預設為淺色
-  const [theme, setTheme] = useState<'purple' | 'blue'>(() => {
-    return (localStorage.getItem('theme') as 'purple' | 'blue') || 'purple';
-  });
-
-  // 監聽favorites變化，存入localStorage
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  // 監聽 theme 變化，存入 localStorage 並更新 document class
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-    document.documentElement.classList.remove('theme-purple', 'theme-blue');
-    document.documentElement.classList.add(`theme-${theme}`);
-  }, [theme]);
-
-  // 切換主題（purple/blue）
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'purple' ? 'blue' : 'purple'));
-  };
-  // 添加到收藏清單，確保不重複
-  const addToFavorites = (item: Movie | TVShow, mediaType: MediaType) => {
-    setFavorites(prev => {
-      const isAlreadyFavorite = prev.some(
-        fav => fav.id === item.id && fav.mediaType === mediaType
-      );
-      if (isAlreadyFavorite) return prev;
-      const newItem = { ...item, mediaType };
-      console.log('Adding to favorites:', newItem);
-      return [...prev, newItem];
-    });
+  const handleAddToFavorites = (item: Movie | TVShow, mediaType: MediaType) => {
+    dispatch(addToFavorites({ item, mediaType }));
   };
 
-  // 從收藏清單移除
-  const removeFromFavorites = (itemId: number, mediaType: MediaType) => {
-    setFavorites(prev =>
-      prev.filter(item => item.id !== itemId || item.mediaType !== mediaType)
-    );
+  const handleRemoveFromFavorites = (itemId: number, mediaType: MediaType) => {
+    dispatch(removeFromFavorites({ itemId, mediaType }));
   };
 
-  // 從收藏清單移除
   const isFavorite = (itemId: number, mediaType: MediaType) => {
     return favorites.some(
       item => item.id === itemId && item.mediaType === mediaType
     );
   };
 
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
+  };
+
   // 提供context給其他元件使用
   const value: MovieContextType = {
     favorites,
-    addToFavorites,
-    removeFromFavorites,
+    addToFavorites: handleAddToFavorites,
+    removeFromFavorites: handleRemoveFromFavorites,
     isFavorite,
     theme,
-    toggleTheme,
+    toggleTheme: handleToggleTheme,
   };
 
   return (
