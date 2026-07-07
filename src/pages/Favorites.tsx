@@ -1,23 +1,24 @@
 import { useMovieContext } from '../contexts/MovieContext';
 import MovieCard from '../components/MovieCard';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Movie, TVShow, MediaType } from '../types/tmdb';
+
+const FILTER_BUTTONS: { label: string; value: MediaType | 'all' }[] = [
+  { label: '全部', value: 'all' },
+  { label: '電影', value: 'movie' },
+  { label: '電視劇', value: 'tv' },
+];
 
 function Favorites() {
   const { favorites } = useMovieContext();
   const [filter, setFilter] = useState<MediaType | 'all'>('all');
 
-  const filteredFavorites = favorites.filter(item => {
-    if (filter === 'all') return true;
-    return item.mediaType === filter;
-  });
-
-  const filterButtons: { label: string; value: MediaType | 'all' }[] = [
-    { label: '全部', value: 'all' },
-    { label: '電影', value: 'movie' },
-    { label: '電視劇', value: 'tv' },
-  ];
+  const filteredFavorites = useMemo(
+    () =>
+      favorites.filter(item => filter === 'all' || item.mediaType === filter),
+    [favorites, filter]
+  );
 
   const renderFavorites = () => (
     <div className="p-8 w-full box-border transition-colors duration-300">
@@ -25,7 +26,7 @@ function Favorites() {
         我的最愛
       </h2>
       <div className="flex justify-center gap-3 mb-8">
-        {filterButtons.map(btn => (
+        {FILTER_BUTTONS.map(btn => (
           <button
             key={btn.value}
             className={`px-3 py-1 font-pixel text-sm rounded-sm transition-all duration-300 ${
@@ -64,7 +65,7 @@ function Favorites() {
         我的最愛
       </h2>
       <div className="flex justify-center gap-3 mb-8">
-        {filterButtons.map(btn => (
+        {FILTER_BUTTONS.map(btn => (
           <button
             key={btn.value}
             className={`px-3 py-1 font-pixel text-sm rounded-sm transition-all duration-300 ${
