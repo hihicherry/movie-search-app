@@ -28,14 +28,9 @@ const DetailPage: React.FC = () => {
   const [showTrailer, setShowTrailer] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const { favorites, addToFavorites, removeFromFavorites, isFavorite } =
-    useMovieContext();
-  const [isFav, setIsFav] = useState<boolean>(false);
+  const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
 
-  useEffect(() => {
-    const isAlreadyFav = isFavorite(parseInt(id!), mediaType!);
-    setIsFav(isAlreadyFav);
-  }, [favorites, id, mediaType]);
+  const isFav = isFavorite(parseInt(id!), mediaType!);
 
   useEffect(() => {
     const fetchData = async () => {

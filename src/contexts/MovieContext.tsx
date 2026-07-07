@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { addToFavorites, removeFromFavorites } from '../store/favoritesSlice';
@@ -35,33 +35,50 @@ export const MovieProvider: React.FC<MovieProviderProps> = ({ children }) => {
   );
   const theme = useSelector((state: RootState) => state.theme.theme);
 
-  const handleAddToFavorites = (item: Movie | TVShow, mediaType: MediaType) => {
-    dispatch(addToFavorites({ item, mediaType }));
-  };
+  const handleAddToFavorites = useCallback(
+    (item: Movie | TVShow, mediaType: MediaType) => {
+      dispatch(addToFavorites({ item, mediaType }));
+    },
+    [dispatch]
+  );
 
-  const handleRemoveFromFavorites = (itemId: number, mediaType: MediaType) => {
-    dispatch(removeFromFavorites({ itemId, mediaType }));
-  };
+  const handleRemoveFromFavorites = useCallback(
+    (itemId: number, mediaType: MediaType) => {
+      dispatch(removeFromFavorites({ itemId, mediaType }));
+    },
+    [dispatch]
+  );
 
-  const isFavorite = (itemId: number, mediaType: MediaType) => {
-    return favorites.some(
-      item => item.id === itemId && item.mediaType === mediaType
-    );
-  };
+  const isFavorite = useCallback(
+    (itemId: number, mediaType: MediaType) =>
+      favorites.some(
+        item => item.id === itemId && item.mediaType === mediaType
+      ),
+    [favorites]
+  );
 
-  const handleToggleTheme = () => {
+  const handleToggleTheme = useCallback(() => {
     dispatch(toggleTheme());
-  };
+  }, [dispatch]);
 
-  // 提供context給其他元件使用
-  const value: MovieContextType = {
-    favorites,
-    addToFavorites: handleAddToFavorites,
-    removeFromFavorites: handleRemoveFromFavorites,
-    isFavorite,
-    theme,
-    toggleTheme: handleToggleTheme,
-  };
+  const value = useMemo<MovieContextType>(
+    () => ({
+      favorites,
+      addToFavorites: handleAddToFavorites,
+      removeFromFavorites: handleRemoveFromFavorites,
+      isFavorite,
+      theme,
+      toggleTheme: handleToggleTheme,
+    }),
+    [
+      favorites,
+      handleAddToFavorites,
+      handleRemoveFromFavorites,
+      isFavorite,
+      theme,
+      handleToggleTheme,
+    ]
+  );
 
   return (
     <MovieContext.Provider value={value}>{children}</MovieContext.Provider>
