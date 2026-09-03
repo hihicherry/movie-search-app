@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useMovieContext } from '../contexts/MovieContext';
 import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
+import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
-import { Movie, TVShow, Cast, Video, MediaType } from '../types/tmdb';
+import { Movie, TVShow, Video, MediaType } from '../types/tmdb';
 
 //統一日期格式
 const formatDate = (dateString?: string): string => {
@@ -13,74 +15,54 @@ const formatDate = (dateString?: string): string => {
   return `${year}年${month}月${day}日`;
 };
 
-interface Params {
-  id: string;
-  mediaType: MediaType;
-}
-
 const DetailPage: React.FC = () => {
-  const { id, mediaType } = useParams<Params>();
-  const [data, setData] = useState<Movie | TVShow | null>(null);
-  const [cast, setCast] = useState<Cast[]>([]);
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { id, mediaType } = useParams();
   const [showTrailer, setShowTrailer] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
+  const canFetch =
+    Boolean(id) && (mediaType === 'movie' || mediaType === 'tv');
 
-  const isFav = isFavorite(parseInt(id!), mediaType!);
+  const detailsQuery = useQuery({
+    queryKey: tmdbKeys.details(mediaType as MediaType, id ?? ''),
+    queryFn: () => getDetails(mediaType as MediaType, id!),
+    enabled: canFetch,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const details = await getDetails(mediaType!, id!);
-        setData(details);
-      } catch (err) {
-        setError(ERROR_MESSAGES.DETAILS_FAILED);
-      }
-    };
+  const creditsQuery = useQuery({
+    queryKey: tmdbKeys.credits(mediaType as MediaType, id ?? ''),
+    queryFn: () => getCredits(mediaType as MediaType, id!),
+    enabled: canFetch,
+    select: credits => credits.slice(0, 5),
+  });
 
-    const fetchCast = async () => {
-      try {
-        const credits = await getCredits(mediaType!, id!);
-        setCast(credits.slice(0, 5));
-      } catch (err) {
-        setError(ERROR_MESSAGES.CREDITS_FAILED);
-      }
-    };
+  const videosQuery = useQuery({
+    queryKey: tmdbKeys.videos(mediaType as MediaType, id ?? ''),
+    queryFn: () => getVideos(mediaType as MediaType, id!),
+    enabled: canFetch,
+    select: (videoData: Video[]) => {
+      const trailer = videoData.find(
+        video =>
+          video.site === 'YouTube' &&
+          (video.type === 'Trailer' || video.type === 'Teaser')
+      );
+      return trailer ? [trailer] : [];
+    },
+  });
 
-    const fetchVideos = async () => {
-      try {
-        const videoData = await getVideos(mediaType!, id!);
-        // 篩選 YouTube 平台的預告片
-        const trailer = videoData.find(
-          (video: Video) =>
-            video.site === 'YouTube' &&
-            ['Trailer', 'Teaser'].includes(video.type)
-        );
-        setVideos(trailer ? [trailer] : []);
-      } catch (err) {
-        setError('無法載入預告片');
-      }
-    };
+  const data = detailsQuery.data ?? null;
+  const cast = creditsQuery.data ?? [];
+  const videos = videosQuery.data ?? [];
+  const isFav = isFavorite(parseInt(id ?? '', 10), mediaType as MediaType);
 
-    const loadData = async () => {
-      setLoading(true);
-      await Promise.all([fetchData(), fetchCast(), fetchVideos()]);
-      setLoading(false);
-    };
-
-    loadData();
-  }, [id, mediaType]);
-
-  const handleFavoriteClick = e => {
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!data || (mediaType !== 'movie' && mediaType !== 'tv')) return;
     if (isFav) {
-      removeFromFavorites(data!.id, mediaType!);
+      removeFromFavorites(data.id, mediaType);
     } else {
-      addToFavorites(data!, mediaType!);
+      addToFavorites(data, mediaType);
     }
   };
 
@@ -94,19 +76,21 @@ const DetailPage: React.FC = () => {
     setShowTrailer(false);
   };
 
-  if (loading)
+  if (detailsQuery.isLoading)
     return (
       <p className="text-center text-xl font-pixel font-bold text-purple theme-blue:text-blue animate-blink">
         載入中...
       </p>
     );
+  if (detailsQuery.isError)
+    return (
+      <p className="font-pixel text-center text-xl text-red-500">
+        {ERROR_MESSAGES.DETAILS_FAILED}
+      </p>
+    );
   if (!data)
     return (
       <p className="font-pixel text-center text-xl text-gray-500">查無此內容</p>
-    );
-  if (error)
-    return (
-      <p className="font-pixel text-center text-xl text-red-500">{error}</p>
     );
 
   return (
