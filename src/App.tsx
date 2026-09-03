@@ -19,13 +19,10 @@ function App() {
             <NavBar />
             <main>
               <Routes>
-                <Route path="/movie-search-app/" element={<Home />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/favorites" element={<Favorites />} />
                 <Route
-                  path="/movie-search-app/favorites"
-                  element={<Favorites />}
-                />
-                <Route
-                  path="/movie-search-app/:mediaType/:id"
+                  path="/:mediaType/:id"
                   element={<DetailPage />}
                 />
               </Routes>

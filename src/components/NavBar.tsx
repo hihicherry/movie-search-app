@@ -17,7 +17,7 @@ function NavBar() {
       <div className="text-l font-bold">
         <Link
           className="hover:text-violet-500 theme-blue:hover:text-sky-500"
-          to="/movie-search-app/"
+          to="/"
         >
           MovieSearch
         </Link>
@@ -26,13 +26,13 @@ function NavBar() {
       <div className="hidden md:flex gap-2 items-center ">
         <Link
           className="text-base font-pixel px-4 py-2 rounded hover:text-violet-500 theme-blue:hover:text-sky-500 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-violet-500 theme-blue:after:bg-sky-500 after:transition-all after:duration-300 hover:after:w-full"
-          to="/movie-search-app/"
+          to="/"
         >
           Home
         </Link>
         <Link
           className="text-base font-pixel px-4 py-2 rounded hover:text-violet-500 theme-blue:hover:text-sky-500 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-violet-500 theme-blue:after:bg-sky-500 after:transition-all after:duration-300 hover:after:w-full"
-          to="/movie-search-app/favorites"
+          to="/favorites"
         >
           Favorites
         </Link>
@@ -66,14 +66,14 @@ function NavBar() {
             <div className="flex flex-col p-4 gap-2">
               <Link
                 className="font-pixel text-purple theme-blue:text-blue text-base px-4 py-2 rounded hover:text-fuchsia-500 theme-blue:hover:text-sky-500"
-                to="/movie-search-app/"
+                to="/"
                 onClick={toggleMenu}
               >
                 Home
               </Link>
               <Link
                 className="font-pixel text-purple theme-blue:text-blue text-base px-4 py-2 rounded hover:text-fuchsia-500 theme-blue:hover:text-sky-500"
-                to="/movie-search-app/favorites"
+                to="/favorites"
                 onClick={toggleMenu}
               >
                 Favorites

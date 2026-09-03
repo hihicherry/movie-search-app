@@ -91,7 +91,7 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
         </p>
         <Link
           className="font-pixel text-sm text-purple theme-blue:text-blue  hover:text-violet-500 theme-blue:hover:text-sky-500"
-          to={`/movie-search-app/${mediaType}/${item.id}`}
+          to={`/${mediaType}/${item.id}`}
         >
           詳細資訊
         </Link>
