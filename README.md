@@ -47,9 +47,17 @@ npm install
 配置 TMDB API
 
 註冊 TMDB 帳戶 並獲取 API Key。
-在專案根目錄創建 .env 檔案，添加以下內容：VITE_TMDB_API_KEY=你的\_API_KEY
+複製 `.env.example` 為 `.env`，填入 TMDB API Key：
 
-注意：請勿將 API Key 提交至 GitHub，確保 .env 已在 .gitignore 中。
+```
+cp .env.example .env
+```
+
+```
+VITE_TMDB_API_KEY=你的_API_KEY
+```
+
+`.env` 已列入 `.gitignore`，請勿將真實金鑰提交至 GitHub。若金鑰曾出現在 git 歷史中，請到 TMDB 後台輪替（revoke / 重新產生）金鑰。
 
 配置 TypeScript
 

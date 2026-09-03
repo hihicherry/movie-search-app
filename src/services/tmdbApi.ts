@@ -1,7 +1,16 @@
 import { Movie, TVShow, Cast, Video, MediaType } from '../types/tmdb';
 
-const APIKEY = '29c03fd685daf100af0e688cdd6a3315';
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
+
+const getApiKey = (): string => {
+  if (!API_KEY) {
+    throw new Error(
+      '缺少 VITE_TMDB_API_KEY，請複製 .env.example 為 .env 並填入金鑰'
+    );
+  }
+  return API_KEY;
+};
 
 // 通用api函數
 const fetchTMDB = async <T>(
@@ -11,7 +20,7 @@ const fetchTMDB = async <T>(
 ): Promise<T> => {
   try {
     const queryParams: Record<string, string> = {
-      api_key: APIKEY,
+      api_key: getApiKey(),
       ...params,
     };
     // 只有在 includeLanguage 為 true 時添加語言參數
