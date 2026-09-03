@@ -1,4 +1,4 @@
-import { useMovieContext } from '../contexts/MovieContext';
+import { useFavorites } from '../contexts/FavoritesContext';
 import MovieCard from '../components/MovieCard';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
@@ -11,7 +11,7 @@ const FILTER_BUTTONS: { label: string; value: MediaType | 'all' }[] = [
 ];
 
 function Favorites() {
-  const { favorites } = useMovieContext();
+  const { favorites } = useFavorites();
   const [filter, setFilter] = useState<MediaType | 'all'>('all');
 
   const filteredFavorites = useMemo(

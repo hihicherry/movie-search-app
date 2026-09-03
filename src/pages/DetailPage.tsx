@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { useMovieContext } from '../contexts/MovieContext';
+import { useFavorites } from '../contexts/FavoritesContext';
 import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
@@ -20,7 +20,7 @@ const DetailPage: React.FC = () => {
   const [showTrailer, setShowTrailer] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const canFetch =
     Boolean(id) && (mediaType === 'movie' || mediaType === 'tv');
 

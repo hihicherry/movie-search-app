@@ -1,6 +1,6 @@
-import { useMovieContext } from '../contexts/MovieContext';
+import { useFavorites } from '../contexts/FavoritesContext';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Movie, TVShow, MediaType } from '../types/tmdb';
 import '../css/index.css';
 
@@ -10,7 +10,7 @@ interface MovieCardProps {
 }
 
 function MovieCard({ item, mediaType }: MovieCardProps) {
-  const { addToFavorites, removeFromFavorites, isFavorite } = useMovieContext();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const favorite = isFavorite(item.id, mediaType);
   const imgRef = useRef<HTMLImageElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -100,4 +100,4 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
   );
 }
 
-export default MovieCard;
+export default memo(MovieCard);

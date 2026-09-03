@@ -1,21 +1,20 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Provider } from 'react-redux';
-import { store } from './store';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import DetailPage from './pages/DetailPage';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import { MovieProvider } from './contexts/MovieContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 import { queryClient } from './query/client';
 import './css/index.css';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <MovieProvider>
+      <ThemeProvider>
+        <FavoritesProvider>
           <div className="min-h-screen bg-purple-gradient theme-blue:bg-blue-gradient transition-colors duration-300">
             <NavBar />
             <main>
@@ -32,8 +31,8 @@ function App() {
               </Routes>
             </main>
           </div>
-        </MovieProvider>
-      </Provider>
+        </FavoritesProvider>
+      </ThemeProvider>
       {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
