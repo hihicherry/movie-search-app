@@ -1,17 +1,19 @@
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import {
   searchMovies,
   searchTVShows,
   getPopularMovies,
   getPopularTVShows,
 } from '../services/tmdbApi';
+import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
 import * as Select from '@radix-ui/react-select'; //下拉選單ui套件
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion'; //hover動畫套件
-import { Movie, TVShow, MediaType } from '../types/tmdb';
+import { MediaType, Movie, TVShow } from '../types/tmdb';
 
 interface MediaSelectProps {
   mediaType: MediaType;
@@ -57,50 +59,45 @@ const SKELETON_KEYS = Array.from({ length: 8 }, (_, i) => `skeleton-${i}`);
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [items, setItems] = useState<(Movie | TVShow)[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [submittedQuery, setSubmittedQuery] = useState<string>('');
   const [mediaType, setMediaType] = useState<MediaType>('movie'); // 默認為電影
 
-  useEffect(() => {
-    const loadItems = async () => {
-      try {
-        setLoading(true);
-        const fetchedItems: (Movie | TVShow)[] =
-          mediaType === 'movie'
-            ? await getPopularMovies()
-            : await getPopularTVShows();
-        setItems(fetchedItems || []);
-      } catch (err) {
-        console.log(err);
-        setError(ERROR_MESSAGES.FETCH_FAILED);
-      } finally {
-        setLoading(false);
+  const isSearch = submittedQuery.length > 0;
+  const listQuery = useQuery<(Movie | TVShow)[]>({
+    queryKey: isSearch
+      ? tmdbKeys.search(mediaType, submittedQuery)
+      : tmdbKeys.popular(mediaType),
+    queryFn: async (): Promise<(Movie | TVShow)[]> => {
+      if (isSearch) {
+        return mediaType === 'movie'
+          ? searchMovies(submittedQuery)
+          : searchTVShows(submittedQuery);
       }
-    };
-    loadItems();
-  }, [mediaType]);
+      return mediaType === 'movie'
+        ? getPopularMovies()
+        : getPopularTVShows();
+    },
+    placeholderData: keepPreviousData,
+  });
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+  const items = listQuery.data ?? [];
+  const loading = listQuery.isPending;
+  const error = listQuery.isError
+    ? isSearch
+      ? ERROR_MESSAGES.SEARCH_FAILED
+      : ERROR_MESSAGES.FETCH_FAILED
+    : null;
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!searchQuery.trim() || loading) return; //搜尋框未輸入資料則不進行搜尋,若正在載入中則不能進行搜尋
+    const nextQuery = searchQuery.trim();
+    if (!nextQuery) return;
+    setSubmittedQuery(nextQuery);
+  };
 
-    setLoading(true);
-    try {
-      const searchResults: (Movie | TVShow)[] =
-        mediaType === 'movie'
-          ? await searchMovies(searchQuery)
-          : await searchTVShows(searchQuery);
-      setItems(Array.isArray(searchResults) ? searchResults : []);
-      setError(null);
-    } catch (err) {
-      console.log(err);
-      setError(ERROR_MESSAGES.SEARCH_FAILED);
-    } finally {
-      setLoading(false);
-    }
-
-    setSearchQuery('');
+  const handleMediaTypeChange = (value: MediaType) => {
+    setMediaType(value);
+    setSubmittedQuery('');
   };
 
   return (
@@ -118,7 +115,10 @@ function Home() {
           aria-label="搜尋電影或電視劇"
         />
         <div className="flex gap-2 sm:gap-4 justify-start w-full sm:w-auto">
-          <MediaSelect mediaType={mediaType} onMediaTypeChange={setMediaType} />
+          <MediaSelect
+            mediaType={mediaType}
+            onMediaTypeChange={handleMediaTypeChange}
+          />
           <button
             className="font-pixel px-3 bg-violet-200 theme-blue:bg-sky-200 text-purple theme-blue:text-blue border-2 border-t-white border-l-white border-r-violet-400 border-b-violet-400 theme-blue:border-r-sky-400 theme-blue:border-b-sky-400 rounded-sm transition-all duration-300 hover:bg-violet-300 theme-blue:hover:bg-sky-300 hover:animate-flicker flex-shrink-0 sm:h-[45px]"
             type="submit"
