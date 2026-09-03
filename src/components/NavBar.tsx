@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMovieContext } from '../contexts/MovieContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { HeartIcon, StarIcon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 function NavBar() {
-  const { theme, toggleTheme } = useMovieContext();
+  const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
