@@ -1,7 +1,8 @@
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import {
   searchMovies,
   searchTVShows,
@@ -57,10 +58,18 @@ function MediaSelect({ mediaType, onMediaTypeChange }: MediaSelectProps) {
 
 const SKELETON_KEYS = Array.from({ length: 8 }, (_, i) => `skeleton-${i}`);
 
+const mediaTypeFromSearchParams = (params: URLSearchParams): MediaType =>
+  params.get('type') === 'tv' ? 'tv' : 'movie';
+
 function Home() {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [submittedQuery, setSubmittedQuery] = useState<string>('');
-  const [mediaType, setMediaType] = useState<MediaType>('movie'); // 默認為電影
+  const [searchParams, setSearchParams] = useSearchParams();
+  const submittedQuery = searchParams.get('q')?.trim() ?? '';
+  const mediaType = mediaTypeFromSearchParams(searchParams);
+  const [searchQuery, setSearchQuery] = useState(submittedQuery);
+
+  useEffect(() => {
+    setSearchQuery(submittedQuery);
+  }, [submittedQuery]);
 
   const isSearch = submittedQuery.length > 0;
   const listQuery = useQuery<(Movie | TVShow)[]>({
@@ -92,12 +101,16 @@ function Home() {
     e.preventDefault();
     const nextQuery = searchQuery.trim();
     if (!nextQuery) return;
-    setSubmittedQuery(nextQuery);
+    const next = new URLSearchParams();
+    next.set('q', nextQuery);
+    if (mediaType === 'tv') next.set('type', 'tv');
+    setSearchParams(next);
   };
 
   const handleMediaTypeChange = (value: MediaType) => {
-    setMediaType(value);
-    setSubmittedQuery('');
+    const next = new URLSearchParams();
+    if (value === 'tv') next.set('type', 'tv');
+    setSearchParams(next);
   };
 
   return (
