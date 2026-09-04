@@ -2,7 +2,6 @@ import { useFavorites } from '../contexts/FavoritesContext';
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 import { Movie, TVShow, MediaType } from '../types/tmdb';
-import '../css/index.css';
 
 interface MovieCardProps {
   item: Movie | TVShow;
@@ -35,16 +34,21 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
       style={{ backdropFilter: 'blur(10px)' }}
     >
       <div className="relative aspect-[2/3] w-full p-2">
-        <img
-          src={
-            item.poster_path
-              ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-              : '/placeholder.jpg'
-          }
-          alt={title}
-          className="w-full h-full rounded"
-          loading="lazy"
-        />
+        {item.poster_path ? (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+            alt={title}
+            className="w-full h-full rounded"
+            loading="lazy"
+          />
+        ) : (
+          <div
+            className="w-full h-full rounded bg-violet-200 theme-blue:bg-sky-200 flex items-center justify-center font-pixel text-xs text-purple theme-blue:text-blue"
+            aria-label={`${title} 無海報`}
+          >
+            無海報
+          </div>
+        )}
         <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
           <button
             className={`absolute top-4 right-4 text-white text-xl p-2 bg-[#00000080] rounded-full border-2 border-white w-10 h-10 flex items-center justify-center transition-colors duration-200 hover:bg-[#302626cc] hover:border-gray-300 ${

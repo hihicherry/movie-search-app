@@ -8,7 +8,6 @@ import NavBar from './components/NavBar';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { queryClient } from './query/client';
-import './css/index.css';
 
 function App() {
   return (

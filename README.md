@@ -94,7 +94,7 @@ movie-search-app/
 │   ├── services/      # TMDB API（tmdbApi.ts）
 │   ├── types/         # TMDB 型別
 │   ├── utils/         # 錯誤訊息等
-│   ├── css/
+│   ├── css/           # 全域樣式（index.css）
 │   ├── App.tsx
 │   └── main.tsx       # 掛上 BrowserRouter basename
 ├── .env.example

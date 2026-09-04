@@ -1,6 +1,6 @@
 import plugin from 'tailwindcss/plugin';
 export default {
-  content: ['./src/**/*.{js,ts,jsx,tsx}', './src/css/**/*.css'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}', './src/css/index.css'],
   theme: {
     extend: {
       fontFamily: {
