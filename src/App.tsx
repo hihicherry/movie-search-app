@@ -21,10 +21,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/favorites" element={<Favorites />} />
-                <Route
-                  path="/:mediaType/:id"
-                  element={<DetailPage />}
-                />
+                <Route path="/:mediaType/:id" element={<DetailPage />} />
               </Routes>
             </main>
           </div>

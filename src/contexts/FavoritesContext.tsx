@@ -51,9 +51,8 @@ interface FavoritesProviderProps {
 export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
   children,
 }) => {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>(
-    readStoredFavorites
-  );
+  const [favorites, setFavorites] =
+    useState<FavoriteItem[]>(readStoredFavorites);
 
   const addToFavorites = useCallback(
     (item: Movie | TVShow, mediaType: MediaType) => {

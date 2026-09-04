@@ -1,8 +1,7 @@
 import { MediaType } from '../types/tmdb';
 
 export const tmdbKeys = {
-  popular: (mediaType: MediaType) =>
-    ['tmdb', 'popular', mediaType] as const,
+  popular: (mediaType: MediaType) => ['tmdb', 'popular', mediaType] as const,
   search: (mediaType: MediaType, query: string) =>
     ['tmdb', 'search', mediaType, query] as const,
   details: (mediaType: MediaType, id: string) =>

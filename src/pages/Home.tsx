@@ -82,9 +82,7 @@ function Home() {
           ? searchMovies(submittedQuery)
           : searchTVShows(submittedQuery);
       }
-      return mediaType === 'movie'
-        ? getPopularMovies()
-        : getPopularTVShows();
+      return mediaType === 'movie' ? getPopularMovies() : getPopularTVShows();
     },
     placeholderData: keepPreviousData,
   });
@@ -149,8 +147,8 @@ function Home() {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
           {SKELETON_KEYS.map(key => (
-              <SkeletonCard key={key} />
-            ))}
+            <SkeletonCard key={key} />
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">

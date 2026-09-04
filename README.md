@@ -18,7 +18,7 @@
 | 項目 | 使用 |
 | --- | --- |
 | 前端 | React 19、React Router 7（`basename` 對齊 Vite `base`） |
-| 類型 | TypeScript 5（多數頁面與元件為 `.tsx`／`.ts`；入口仍為 `src/main.jsx`） |
+| 類型 | TypeScript 5（入口為 `src/main.tsx`，ESLint 掃 `.js`／`.jsx`／`.ts`／`.tsx`） |
 | 伺服器狀態 | TanStack Query（熱門／搜尋／詳情快取） |
 | 客戶端狀態 | `ThemeContext`、`FavoritesContext` |
 | 樣式 | Tailwind CSS 3 |
@@ -96,7 +96,7 @@ movie-search-app/
 │   ├── utils/         # 錯誤訊息等
 │   ├── css/
 │   ├── App.tsx
-│   └── main.jsx       # 掛上 BrowserRouter basename
+│   └── main.tsx       # 掛上 BrowserRouter basename
 ├── .env.example
 ├── eslint.config.js
 ├── tailwind.config.js
@@ -108,7 +108,8 @@ movie-search-app/
 ## 程式碼品質
 
 ```bash
-npm run lint        # ESLint（目前掃描 src 內 .js／.jsx）
+npm run typecheck   # tsc --noEmit
+npm run lint        # ESLint（src 內 .js／.jsx／.ts／.tsx）
 npm run lint:fix
 npm run format      # Prettier
 ```
@@ -119,7 +120,6 @@ npm run format      # Prettier
 
 ## 已知限制
 
-- TypeScript 尚未涵蓋全部檔案（例如 `main.jsx`）；ESLint 也尚未掃 `.ts`／`.tsx`。
 - 缺少單元測試。
 - GitHub Pages 為靜態 hosting：詳情深連結需建置時產出 `404.html`；`npm run deploy` 才會更新線上版，合併到 `main` 不會自動發布。
 
