@@ -105,7 +105,6 @@ const DetailPage: React.FC = () => {
           backgroundImage: `url('https://image.tmdb.org/t/p/w1280${data.backdrop_path}')`,
         }}
       >
-        <div className="absolute inset-0"></div>
         <h1 className="absolute bottom-6 left-6 text-4xl md:text-5xl font-pixel text-white [text-shadow:_0_2px_10px_#475569]">
           {(data as Movie).title || (data as TVShow).name}
         </h1>
