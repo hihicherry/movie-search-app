@@ -1,6 +1,6 @@
 import { useFavorites } from '../contexts/FavoritesContext';
 import { Link } from 'react-router-dom';
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 import { Movie, TVShow, MediaType } from '../types/tmdb';
 import '../css/index.css';
 
@@ -12,8 +12,6 @@ interface MovieCardProps {
 function MovieCard({ item, mediaType }: MovieCardProps) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const favorite = isFavorite(item.id, mediaType);
-  const imgRef = useRef<HTMLImageElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   function onFavoriteClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -31,29 +29,6 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
       ? (item as Movie).release_date
       : (item as TVShow).first_air_date;
 
-  // 使用 IntersectionObserver 實現懶加載
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
-    return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
-      }
-    };
-  }, []);
-
   return (
     <div
       className="relative bg-theme-purple-card-gradient theme-blue:bg-theme-blue-card-gradient h-full flex flex-col shadow-lg border-2 border-violet-300 theme-blue:border-sky-400 transition-colors duration-300 hover:animate-pulse"
@@ -61,7 +36,6 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
     >
       <div className="relative aspect-[2/3] w-full p-2">
         <img
-          ref={imgRef}
           src={
             item.poster_path
               ? `https://image.tmdb.org/t/p/w500${item.poster_path}`

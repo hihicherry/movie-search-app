@@ -2,7 +2,7 @@ import { useFavorites } from '../contexts/FavoritesContext';
 import MovieCard from '../components/MovieCard';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
-import { Movie, TVShow, MediaType } from '../types/tmdb';
+import { MediaType } from '../types/tmdb';
 
 const FILTER_BUTTONS: { label: string; value: MediaType | 'all' }[] = [
   { label: '全部', value: 'all' },

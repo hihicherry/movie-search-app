@@ -21,8 +21,7 @@ const DetailPage: React.FC = () => {
 
   const navigate = useNavigate();
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  const canFetch =
-    Boolean(id) && (mediaType === 'movie' || mediaType === 'tv');
+  const canFetch = Boolean(id) && (mediaType === 'movie' || mediaType === 'tv');
 
   const detailsQuery = useQuery({
     queryKey: tmdbKeys.details(mediaType as MediaType, id ?? ''),
