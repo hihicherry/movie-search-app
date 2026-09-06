@@ -3,6 +3,7 @@ import MovieCard from '../components/MovieCard';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import { MediaType } from '../types/tmdb';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 
 const FILTER_BUTTONS: { label: string; value: MediaType | 'all' }[] = [
   { label: '全部', value: 'all' },
@@ -13,6 +14,7 @@ const FILTER_BUTTONS: { label: string; value: MediaType | 'all' }[] = [
 function Favorites() {
   const { favorites } = useFavorites();
   const [filter, setFilter] = useState<MediaType | 'all'>('all');
+  const { reduceMotion, cardHover, cardTransition } = useMotionPreference();
 
   const filteredFavorites = useMemo(
     () =>
@@ -44,13 +46,10 @@ function Favorites() {
         {filteredFavorites.map(item => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0 }}
+            initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0px 5px 5px #475569',
-            }}
-            transition={{ duration: 0.3 }}
+            whileHover={cardHover}
+            transition={cardTransition}
           >
             <MovieCard item={item} mediaType={item.mediaType as MediaType} />
           </motion.div>

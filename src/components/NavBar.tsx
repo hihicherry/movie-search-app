@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 import { HeartIcon, StarIcon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 
 function NavBar() {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { reduceMotion } = useMotionPreference();
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -57,10 +59,10 @@ function NavBar() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={reduceMotion ? false : { opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -20 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
             className="absolute top-[50px] left-0 w-full bg-purple-gradient theme-blue:bg-blue-gradient shadow-md md:hidden z-50"
           >
             <div className="flex flex-col p-4 gap-2">

@@ -30,3 +30,17 @@
 .hover\:animate-flicker:hover {
   animation: flicker 0.2s infinite;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flicker,
+  .hover\:animate-flicker:hover,
+  .animate-pulse,
+  .hover\:animate-pulse:hover,
+  .animate-blink {
+    animation: none !important;
+  }
+
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+}

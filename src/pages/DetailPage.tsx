@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useFavorites } from '../contexts/FavoritesContext';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
@@ -21,6 +22,7 @@ const DetailPage: React.FC = () => {
 
   const navigate = useNavigate();
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { reduceMotion } = useMotionPreference();
   const canFetch = Boolean(id) && (mediaType === 'movie' || mediaType === 'tv');
 
   const detailsQuery = useQuery({
@@ -95,9 +97,9 @@ const DetailPage: React.FC = () => {
   return (
     <motion.div
       className="p-6 transition-colors duration-300"
-      initial={{ opacity: 0 }}
+      initial={reduceMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: reduceMotion ? 0 : 0.5 }}
     >
       <div
         className="relative w-full h-[400px] bg-cover bg-center"
@@ -129,9 +131,10 @@ const DetailPage: React.FC = () => {
       {showTrailer && videos.length > 0 && (
         <motion.div
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
-          initial={{ opacity: 0 }}
+          initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.3 }}
         >
           <div className="relative bg-purple-gradient theme-blue:bg-blue-gradient p-4 rounded-lg max-w-4xl w-full">
             <button
@@ -161,9 +164,12 @@ const DetailPage: React.FC = () => {
         style={{ backdropFilter: 'blur(10px)' }}
       >
         <motion.div
-          initial="fadeIn"
-          animate="fadeIn"
-          transition={{ delay: 0.2 }}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.3,
+            delay: reduceMotion ? 0 : 0.2,
+          }}
         >
           <h2 className="text-purple theme-blue:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
             主要演員：
@@ -177,9 +183,12 @@ const DetailPage: React.FC = () => {
           </ul>
         </motion.div>
         <motion.div
-          initial="fadeIn"
-          animate="fadeIn"
-          transition={{ delay: 0.4 }}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.3,
+            delay: reduceMotion ? 0 : 0.4,
+          }}
         >
           <h2 className="text-purple theme-blue:text-blue text-xl font-bold [text-shadow:2px_2px_4px_rgba(0,0,0,0.100)]">
             內容簡介：
