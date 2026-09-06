@@ -14,6 +14,7 @@ import {
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion';
@@ -88,6 +89,7 @@ function Home() {
   const [searchQuery, setSearchQuery] = useState(submittedQuery);
   const [prevSubmittedQuery, setPrevSubmittedQuery] = useState(submittedQuery);
   const debouncedQuery = useDebouncedValue(searchQuery, SEARCH_DEBOUNCE_MS);
+  const { cardHover, cardTransition } = useMotionPreference();
 
   if (submittedQuery !== prevSubmittedQuery) {
     setPrevSubmittedQuery(submittedQuery);
@@ -220,11 +222,8 @@ function Home() {
               items.map(item => (
                 <motion.div
                   key={`${mediaType}-${item.id}`}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0px 5px 5px #475569',
-                  }}
-                  transition={{ duration: 0.3 }}
+                  whileHover={cardHover}
+                  transition={cardTransition}
                 >
                   <MovieCard item={item} mediaType={mediaType} />
                 </motion.div>
