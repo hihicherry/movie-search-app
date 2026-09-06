@@ -199,7 +199,7 @@ function Home() {
         </div>
       )}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto p-4">
           {SKELETON_KEYS.map(key => (
             <SkeletonCard key={key} />
           ))}
@@ -213,7 +213,7 @@ function Home() {
             </p>
           )}
           <div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto p-4"
             aria-busy={listQuery.isFetching}
           >
             {items.length > 0 ? (
@@ -230,7 +230,7 @@ function Home() {
                 </motion.div>
               ))
             ) : (
-              <div className="font-pixel text-center text-gray-500 theme-blue:text-gray-300">
+              <div className="col-span-full font-pixel text-center text-gray-500 theme-blue:text-gray-300">
                 沒有搜尋結果
               </div>
             )}
