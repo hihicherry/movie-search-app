@@ -6,8 +6,9 @@
 
 ## 主要功能
 
-- **影視搜尋：** 依關鍵字搜尋電影或電視劇；已送出的關鍵字與媒體類型會寫進 URL（`?q=`、`?type=tv`），從詳情頁返回時會還原同一批結果。
+- **影視搜尋：** 依關鍵字搜尋電影或電視劇；輸入後約 0.4 秒會寫進 URL（`?q=`、`?type=tv`），也可按「查詢」立刻送出。從詳情頁返回時會還原同一批結果與頁碼。
 - **熱門清單：** 未搜尋時顯示該類型的熱門作品。
+- **分頁：** 熱門與搜尋以頁碼切換（`?page=`，每頁 20 筆，最多 500 頁）。搜尋或切換類型會回到第 1 頁。
 - **詳情頁：** 海報、發行年份、劇情簡介、演員與預告片；可分享或重整詳情 URL（需部署含 SPA fallback 的建置）。
 - **收藏：** 以 `localStorage` 持久化，可在卡片或詳情頁加入／移除。
 - **主題：** 紫色／藍色主題切換，狀態存在 `localStorage`。
@@ -76,7 +77,7 @@ GitHub Pages 來源為 `gh-pages` 分支。部署後約數分鐘可到線上版�
 
 ## 使用說明
 
-- **搜尋：** 在首頁輸入關鍵字後送出。結果以卡片顯示海報、標題與發行年份。切換電影／電視劇會回到該類型熱門清單。
+- **搜尋：** 在首頁輸入關鍵字，停一下或點「查詢」。結果以卡片顯示海報、標題與發行年份；用「上一頁／下一頁」或頁碼切換。切換電影／電視劇會回到該類型熱門第 1 頁。
 - **詳情：** 點卡片進入 `/:mediaType/:id`。詳情頁的「返回」會回到上一頁（含搜尋結果）；導覽列 Home 則連到沒有搜尋參數的熱門首頁。
 - **收藏：** 點 ♥ 加入或移除；到 Favorites 頁查看清單。
 - **主題：** 在導覽列切換紫色／藍色。
@@ -87,13 +88,13 @@ GitHub Pages 來源為 `gh-pages` 分支。部署後約數分鐘可到線上版�
 movie-search-app/
 ├── public/
 ├── src/
-│   ├── components/    # MovieCard、NavBar、SkeletonCard
+│   ├── components/    # MovieCard、NavBar、SkeletonCard、PaginationBar
 │   ├── contexts/      # ThemeContext、FavoritesContext
 │   ├── pages/         # Home、DetailPage、Favorites
 │   ├── query/         # TanStack Query client 與 query keys
 │   ├── services/      # TMDB API（tmdbApi.ts）
 │   ├── types/         # TMDB 型別
-│   ├── utils/         # 錯誤訊息等
+│   ├── hooks/         # useDebouncedValue 等
 │   ├── css/           # 全域樣式（index.css）
 │   ├── App.tsx
 │   └── main.tsx       # 掛上 BrowserRouter basename

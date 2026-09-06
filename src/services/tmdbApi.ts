@@ -1,4 +1,11 @@
-import { Movie, TVShow, Cast, Video, MediaType } from '../types/tmdb';
+import {
+  Movie,
+  TVShow,
+  Cast,
+  Video,
+  MediaType,
+  PaginatedResponse,
+} from '../types/tmdb';
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -37,25 +44,41 @@ const fetchTMDB = async <T>(
   }
 };
 
+export const TMDB_MAX_PAGE = 500;
+
 //獲取近期受歡迎的電影
-export const getPopularMovies = (): Promise<Movie[]> =>
-  fetchTMDB<{ results: Movie[] }>('/movie/popular').then(data => data.results);
+export const getPopularMovies = (page = 1): Promise<PaginatedResponse<Movie>> =>
+  fetchTMDB<PaginatedResponse<Movie>>('/movie/popular', {
+    page: String(page),
+  });
 
 //獲取近期受歡迎的電視劇
-export const getPopularTVShows = (): Promise<TVShow[]> =>
-  fetchTMDB<{ results: TVShow[] }>('/tv/popular').then(data => data.results);
+export const getPopularTVShows = (
+  page = 1
+): Promise<PaginatedResponse<TVShow>> =>
+  fetchTMDB<PaginatedResponse<TVShow>>('/tv/popular', {
+    page: String(page),
+  });
 
 //查詢電影
-export const searchMovies = (query: string): Promise<Movie[]> =>
-  fetchTMDB<{ results: Movie[] }>('/search/movie', { query }).then(
-    data => data.results
-  );
+export const searchMovies = (
+  query: string,
+  page = 1
+): Promise<PaginatedResponse<Movie>> =>
+  fetchTMDB<PaginatedResponse<Movie>>('/search/movie', {
+    query,
+    page: String(page),
+  });
 
 //查詢電視劇
-export const searchTVShows = (query: string): Promise<TVShow[]> =>
-  fetchTMDB<{ results: TVShow[] }>('/search/tv', { query }).then(
-    data => data.results
-  );
+export const searchTVShows = (
+  query: string,
+  page = 1
+): Promise<PaginatedResponse<TVShow>> =>
+  fetchTMDB<PaginatedResponse<TVShow>>('/search/tv', {
+    query,
+    page: String(page),
+  });
 
 // 獲取電影或電視劇介紹
 export const getDetails = (

@@ -1,5 +1,6 @@
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
+import PaginationBar from '../components/PaginationBar';
 import { useEffect, useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -8,13 +9,15 @@ import {
   searchTVShows,
   getPopularMovies,
   getPopularTVShows,
+  TMDB_MAX_PAGE,
 } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
-import * as Select from '@radix-ui/react-select'; //下拉選單ui套件
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { motion } from 'framer-motion'; //hover動畫套件
-import { MediaType, Movie, TVShow } from '../types/tmdb';
+import { motion } from 'framer-motion';
+import { MediaType, Movie, PaginatedResponse, TVShow } from '../types/tmdb';
 
 interface MediaSelectProps {
   mediaType: MediaType;
@@ -57,37 +60,68 @@ function MediaSelect({ mediaType, onMediaTypeChange }: MediaSelectProps) {
 }
 
 const SKELETON_KEYS = Array.from({ length: 8 }, (_, i) => `skeleton-${i}`);
+const SEARCH_DEBOUNCE_MS = 400;
 
 const mediaTypeFromSearchParams = (params: URLSearchParams): MediaType =>
   params.get('type') === 'tv' ? 'tv' : 'movie';
+
+const pageFromSearchParams = (params: URLSearchParams): number => {
+  const raw = Number(params.get('page'));
+  if (!Number.isInteger(raw) || raw < 1) return 1;
+  return Math.min(raw, TMDB_MAX_PAGE);
+};
+
+const listParamsFrom = (query: string, mediaType: MediaType, page = 1) => {
+  const next = new URLSearchParams();
+  const trimmed = query.trim();
+  if (trimmed) next.set('q', trimmed);
+  if (mediaType === 'tv') next.set('type', 'tv');
+  if (page > 1) next.set('page', String(page));
+  return next;
+};
 
 function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const submittedQuery = searchParams.get('q')?.trim() ?? '';
   const mediaType = mediaTypeFromSearchParams(searchParams);
+  const page = pageFromSearchParams(searchParams);
   const [searchQuery, setSearchQuery] = useState(submittedQuery);
+  const [prevSubmittedQuery, setPrevSubmittedQuery] = useState(submittedQuery);
+  const debouncedQuery = useDebouncedValue(searchQuery, SEARCH_DEBOUNCE_MS);
+
+  if (submittedQuery !== prevSubmittedQuery) {
+    setPrevSubmittedQuery(submittedQuery);
+    setSearchQuery(submittedQuery);
+  }
 
   useEffect(() => {
-    setSearchQuery(submittedQuery);
-  }, [submittedQuery]);
+    if (searchQuery.trim() !== debouncedQuery.trim()) return;
+    const trimmed = debouncedQuery.trim();
+    if (trimmed === submittedQuery) return;
+    setSearchParams(listParamsFrom(trimmed, mediaType), { replace: true });
+  }, [debouncedQuery, mediaType, searchQuery, setSearchParams, submittedQuery]);
 
   const isSearch = submittedQuery.length > 0;
-  const listQuery = useQuery<(Movie | TVShow)[]>({
+  const listQuery = useQuery<PaginatedResponse<Movie | TVShow>>({
     queryKey: isSearch
-      ? tmdbKeys.search(mediaType, submittedQuery)
-      : tmdbKeys.popular(mediaType),
-    queryFn: async (): Promise<(Movie | TVShow)[]> => {
+      ? tmdbKeys.search(mediaType, submittedQuery, page)
+      : tmdbKeys.popular(mediaType, page),
+    queryFn: () => {
       if (isSearch) {
         return mediaType === 'movie'
-          ? searchMovies(submittedQuery)
-          : searchTVShows(submittedQuery);
+          ? searchMovies(submittedQuery, page)
+          : searchTVShows(submittedQuery, page);
       }
-      return mediaType === 'movie' ? getPopularMovies() : getPopularTVShows();
+      return mediaType === 'movie'
+        ? getPopularMovies(page)
+        : getPopularTVShows(page);
     },
     placeholderData: keepPreviousData,
   });
 
-  const items = listQuery.data ?? [];
+  const items = listQuery.data?.results ?? [];
+  const totalResults = listQuery.data?.total_results ?? 0;
+  const totalPages = Math.min(listQuery.data?.total_pages ?? 1, TMDB_MAX_PAGE);
   const loading = listQuery.isPending;
   const error = listQuery.isError
     ? isSearch
@@ -95,20 +129,40 @@ function Home() {
       : ERROR_MESSAGES.FETCH_FAILED
     : null;
 
+  useEffect(() => {
+    if (!listQuery.data || listQuery.isPlaceholderData) return;
+    if (page > totalPages && totalPages >= 1) {
+      setSearchParams(listParamsFrom(submittedQuery, mediaType, totalPages), {
+        replace: true,
+      });
+    }
+  }, [
+    listQuery.data,
+    listQuery.isPlaceholderData,
+    mediaType,
+    page,
+    setSearchParams,
+    submittedQuery,
+    totalPages,
+  ]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [page, submittedQuery, mediaType]);
+
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const nextQuery = searchQuery.trim();
-    if (!nextQuery) return;
-    const next = new URLSearchParams();
-    next.set('q', nextQuery);
-    if (mediaType === 'tv') next.set('type', 'tv');
-    setSearchParams(next);
+    setSearchParams(listParamsFrom(searchQuery, mediaType), { replace: true });
   };
 
   const handleMediaTypeChange = (value: MediaType) => {
-    const next = new URLSearchParams();
-    if (value === 'tv') next.set('type', 'tv');
-    setSearchParams(next);
+    setSearchParams(listParamsFrom('', value));
+  };
+
+  const goToPage = (nextPage: number) => {
+    const clamped = Math.min(Math.max(nextPage, 1), TMDB_MAX_PAGE);
+    if (clamped === page) return;
+    setSearchParams(listParamsFrom(submittedQuery, mediaType, clamped));
   };
 
   return (
@@ -151,26 +205,43 @@ function Home() {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
-          {Array.isArray(items) && items.length > 0 ? (
-            items.map(item => (
-              <motion.div
-                key={item.id}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0px 5px 5px #475569',
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <MovieCard item={item} mediaType={mediaType} />
-              </motion.div>
-            ))
-          ) : (
-            <div className="font-pixel text-center text-gray-500 theme-blue:text-gray-300">
-              沒有搜尋結果
-            </div>
+        <>
+          {items.length > 0 && (
+            <p className="font-pixel text-center text-sm text-gray-500 theme-blue:text-gray-300 px-4 mb-2">
+              第 {page} / {totalPages} 頁
+              {totalResults > 0 ? ` · 共 ${totalResults} 筆` : ''}
+            </p>
           )}
-        </div>
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4"
+            aria-busy={listQuery.isFetching}
+          >
+            {items.length > 0 ? (
+              items.map(item => (
+                <motion.div
+                  key={`${mediaType}-${item.id}`}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0px 5px 5px #475569',
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <MovieCard item={item} mediaType={mediaType} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="font-pixel text-center text-gray-500 theme-blue:text-gray-300">
+                沒有搜尋結果
+              </div>
+            )}
+          </div>
+          <PaginationBar
+            page={page}
+            totalPages={totalPages}
+            onPageChange={goToPage}
+            disabled={listQuery.isFetching}
+          />
+        </>
       )}
     </div>
   );
