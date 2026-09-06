@@ -38,3 +38,10 @@ export interface Video {
 }
 
 export type MediaType = 'movie' | 'tv';
+
+export interface PaginatedResponse<T> {
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
+}
