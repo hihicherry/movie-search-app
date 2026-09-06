@@ -8,6 +8,7 @@ import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
 import { Movie, TVShow, Video, MediaType } from '../types/tmdb';
+import SkeletonDetail from '../components/SkeletonDetail';
 
 //統一日期格式
 const formatDate = (dateString?: string): string => {
@@ -78,11 +79,7 @@ const DetailPage: React.FC = () => {
   };
 
   if (detailsQuery.isLoading)
-    return (
-      <p className="text-center text-xl font-pixel font-bold text-purple theme-blue:text-blue animate-blink">
-        載入中...
-      </p>
-    );
+    return <SkeletonDetail onBack={() => navigate(-1)} />;
   if (detailsQuery.isError)
     return (
       <p className="font-pixel text-center text-xl text-red-500">
