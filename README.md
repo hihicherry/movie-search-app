@@ -80,8 +80,8 @@ GitHub Pages 來源為 `gh-pages` 分支。部署後約數分鐘可到線上版�
 
 - **搜尋：** 在首頁輸入關鍵字，停一下或點「查詢」。結果以卡片顯示海報、標題與發行年份；用「上一頁／下一頁」或頁碼切換。切換電影／電視劇會回到該媒體類型熱門第 1 頁，並清掉關鍵字與類型篩選。
 - **進階篩選：** 點搜尋欄旁的圖示展開類型標籤，可多選。只選類型時列表為該類型熱門作品（TMDB Discover）。再輸入關鍵字會在該類型中搜標題。再點一次可取消；「清除篩選」會拿掉所有類型。
-- **詳情：** 點卡片進入 `/:mediaType/:id`。詳情頁的「返回」會回到上一頁（含搜尋結果或類型篩選）；導覽列 Home 則連到沒有搜尋參數的熱門首頁。
-- **收藏：** 點 ♥ 加入或移除；到 Favorites 頁查看清單。
+- **詳情：** 點卡片（海報或標題）進入 `/:mediaType/:id`。詳情頁的「返回」會回到上一頁（含搜尋結果或類型篩選）；導覽列 Home 則連到沒有搜尋參數的熱門首頁。
+- **收藏：** 點卡片右下角的像素愛心（實心＝已收藏，空心＝未收藏）；到 Favorites 頁查看清單。詳情頁也可加入／移除。
 - **主題：** 在導覽列切換紫色／藍色。
 
 ## 程式碼結構
@@ -90,7 +90,7 @@ GitHub Pages 來源為 `gh-pages` 分支。部署後約數分鐘可到線上版�
 movie-search-app/
 ├── public/
 ├── src/
-│   ├── components/    # MovieCard、NavBar、SkeletonCard、PaginationBar、AdvancedSearch、WatchProviders
+│   ├── components/    # MovieCard、PixelHeart、NavBar、SkeletonCard、PaginationBar、AdvancedSearch、WatchProviders
 │   ├── contexts/      # ThemeContext、FavoritesContext
 │   ├── pages/         # Home、DetailPage、Favorites
 │   ├── query/         # TanStack Query client 與 query keys
