@@ -5,6 +5,8 @@ export const tmdbKeys = {
     ['tmdb', 'popular', mediaType, page] as const,
   search: (mediaType: MediaType, query: string, page: number) =>
     ['tmdb', 'search', mediaType, query, page] as const,
+  discover: (mediaType: MediaType, genreKey: string, page: number) =>
+    ['tmdb', 'discover', mediaType, genreKey, page] as const,
   details: (mediaType: MediaType, id: string) =>
     ['tmdb', 'details', mediaType, id] as const,
   credits: (mediaType: MediaType, id: string) =>

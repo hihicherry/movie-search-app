@@ -1,7 +1,8 @@
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
 import PaginationBar from '../components/PaginationBar';
-import { useEffect, useState } from 'react';
+import AdvancedSearch from '../components/AdvancedSearch';
+import { useEffect, useMemo, useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -9,12 +10,15 @@ import {
   searchTVShows,
   getPopularMovies,
   getPopularTVShows,
+  discoverMovies,
+  discoverTVShows,
   TMDB_MAX_PAGE,
 } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useMotionPreference } from '../hooks/useMotionPreference';
+import { genreKey, parseGenreIds } from '../utils/genres';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion';
@@ -72,11 +76,18 @@ const pageFromSearchParams = (params: URLSearchParams): number => {
   return Math.min(raw, TMDB_MAX_PAGE);
 };
 
-const listParamsFrom = (query: string, mediaType: MediaType, page = 1) => {
+const listParamsFrom = (
+  query: string,
+  mediaType: MediaType,
+  page = 1,
+  genreIds: number[] = []
+) => {
   const next = new URLSearchParams();
   const trimmed = query.trim();
   if (trimmed) next.set('q', trimmed);
   if (mediaType === 'tv') next.set('type', 'tv');
+  const genres = genreKey(genreIds);
+  if (genres) next.set('genre', genres);
   if (page > 1) next.set('page', String(page));
   return next;
 };
@@ -86,6 +97,12 @@ function Home() {
   const submittedQuery = searchParams.get('q')?.trim() ?? '';
   const mediaType = mediaTypeFromSearchParams(searchParams);
   const page = pageFromSearchParams(searchParams);
+  const genreParam = searchParams.get('genre');
+  const selectedGenreIds = useMemo(
+    () => parseGenreIds(genreParam, mediaType),
+    [genreParam, mediaType]
+  );
+  const selectedGenreKey = genreKey(selectedGenreIds);
   const [searchQuery, setSearchQuery] = useState(submittedQuery);
   const [prevSubmittedQuery, setPrevSubmittedQuery] = useState(submittedQuery);
   const debouncedQuery = useDebouncedValue(searchQuery, SEARCH_DEBOUNCE_MS);
@@ -100,15 +117,32 @@ function Home() {
     if (searchQuery.trim() !== debouncedQuery.trim()) return;
     const trimmed = debouncedQuery.trim();
     if (trimmed === submittedQuery) return;
-    setSearchParams(listParamsFrom(trimmed, mediaType), { replace: true });
-  }, [debouncedQuery, mediaType, searchQuery, setSearchParams, submittedQuery]);
+    setSearchParams(listParamsFrom(trimmed, mediaType, 1, selectedGenreIds), {
+      replace: true,
+    });
+  }, [
+    debouncedQuery,
+    mediaType,
+    searchQuery,
+    selectedGenreIds,
+    setSearchParams,
+    submittedQuery,
+  ]);
 
-  const isSearch = submittedQuery.length > 0;
+  const isDiscover = selectedGenreIds.length > 0;
+  const isSearch = !isDiscover && submittedQuery.length > 0;
   const listQuery = useQuery<PaginatedResponse<Movie | TVShow>>({
-    queryKey: isSearch
-      ? tmdbKeys.search(mediaType, submittedQuery, page)
-      : tmdbKeys.popular(mediaType, page),
+    queryKey: isDiscover
+      ? tmdbKeys.discover(mediaType, selectedGenreKey, page)
+      : isSearch
+        ? tmdbKeys.search(mediaType, submittedQuery, page)
+        : tmdbKeys.popular(mediaType, page),
     queryFn: () => {
+      if (isDiscover) {
+        return mediaType === 'movie'
+          ? discoverMovies(selectedGenreIds, page)
+          : discoverTVShows(selectedGenreIds, page);
+      }
       if (isSearch) {
         return mediaType === 'movie'
           ? searchMovies(submittedQuery, page)
@@ -126,7 +160,7 @@ function Home() {
   const totalPages = Math.min(listQuery.data?.total_pages ?? 1, TMDB_MAX_PAGE);
   const loading = listQuery.isPending;
   const error = listQuery.isError
-    ? isSearch
+    ? isSearch || isDiscover
       ? ERROR_MESSAGES.SEARCH_FAILED
       : ERROR_MESSAGES.FETCH_FAILED
     : null;
@@ -134,15 +168,19 @@ function Home() {
   useEffect(() => {
     if (!listQuery.data || listQuery.isPlaceholderData) return;
     if (page > totalPages && totalPages >= 1) {
-      setSearchParams(listParamsFrom(submittedQuery, mediaType, totalPages), {
-        replace: true,
-      });
+      setSearchParams(
+        listParamsFrom(submittedQuery, mediaType, totalPages, selectedGenreIds),
+        {
+          replace: true,
+        }
+      );
     }
   }, [
     listQuery.data,
     listQuery.isPlaceholderData,
     mediaType,
     page,
+    selectedGenreIds,
     setSearchParams,
     submittedQuery,
     totalPages,
@@ -150,37 +188,61 @@ function Home() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [page, submittedQuery, mediaType]);
+  }, [page, submittedQuery, mediaType, selectedGenreKey]);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSearchParams(listParamsFrom(searchQuery, mediaType), { replace: true });
+    setSearchParams(
+      listParamsFrom(searchQuery, mediaType, 1, selectedGenreIds),
+      { replace: true }
+    );
   };
 
   const handleMediaTypeChange = (value: MediaType) => {
     setSearchParams(listParamsFrom('', value));
   };
 
+  const handleToggleGenre = (id: number) => {
+    const nextIds = selectedGenreIds.includes(id)
+      ? selectedGenreIds.filter(genreId => genreId !== id)
+      : [...selectedGenreIds, id];
+    setSearchParams(listParamsFrom(searchQuery, mediaType, 1, nextIds));
+  };
+
+  const handleClearGenres = () => {
+    setSearchParams(listParamsFrom(searchQuery, mediaType));
+  };
+
   const goToPage = (nextPage: number) => {
     const clamped = Math.min(Math.max(nextPage, 1), TMDB_MAX_PAGE);
     if (clamped === page) return;
-    setSearchParams(listParamsFrom(submittedQuery, mediaType, clamped));
+    setSearchParams(
+      listParamsFrom(submittedQuery, mediaType, clamped, selectedGenreIds)
+    );
   };
 
   return (
     <div className="py-4 w-full box-border transition-colors duration-300">
       <form
-        className="max-w-[600px] mx-auto mb-8 flex gap-4 px-4 flex-wrap sm:flex-row items-center"
+        className="max-w-[600px] mx-auto mb-8 flex gap-4 px-4 flex-wrap sm:flex-row items-start"
         onSubmit={handleSearch}
       >
-        <input
-          className="font-pixel flex-1 px-4 py-3 border-2 border-violet-300 theme-blue:border-sky-400 rounded-sm bg-white shadow-[0_3px_3px_-2px_#452d7acd] text-base focus:outline-none focus:ring-2 focus:ring-[#7776B3] theme-blue:focus:ring-[#60A5FA] sm:h-[45px]"
-          type="text"
-          placeholder="請輸入欲查詢的電影或電視劇名稱"
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          aria-label="搜尋電影或電視劇"
-        />
+        <div className="flex flex-1 gap-2 items-center w-full sm:w-auto flex-wrap min-w-0">
+          <input
+            className="font-pixel flex-1 min-w-0 px-4 py-3 border-2 border-violet-300 theme-blue:border-sky-400 rounded-sm bg-white shadow-[0_3px_3px_-2px_#452d7acd] text-base focus:outline-none focus:ring-2 focus:ring-[#7776B3] theme-blue:focus:ring-[#60A5FA] sm:h-[45px]"
+            type="text"
+            placeholder="請輸入欲查詢的電影或電視劇名稱"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            aria-label="搜尋電影或電視劇"
+          />
+          <AdvancedSearch
+            mediaType={mediaType}
+            selectedGenreIds={selectedGenreIds}
+            onToggleGenre={handleToggleGenre}
+            onClear={handleClearGenres}
+          />
+        </div>
         <div className="flex gap-2 sm:gap-4 justify-start w-full sm:w-auto">
           <MediaSelect
             mediaType={mediaType}
@@ -195,6 +257,11 @@ function Home() {
           </button>
         </div>
       </form>
+      {isDiscover && (
+        <p className="font-pixel text-center text-sm text-gray-500 theme-blue:text-gray-300 px-4 -mt-6 mb-6">
+          目前顯示該類型的熱門作品，標題搜尋未套用
+        </p>
+      )}
       {error && (
         <div className="text-center text-red-500 theme-blue:text-red-400">
           {error}

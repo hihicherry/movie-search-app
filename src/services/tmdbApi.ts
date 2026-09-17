@@ -7,6 +7,7 @@ import {
   PaginatedResponse,
   WatchProvidersResponse,
 } from '../types/tmdb';
+import { genreKey } from '../utils/genres';
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -78,6 +79,26 @@ export const searchTVShows = (
 ): Promise<PaginatedResponse<TVShow>> =>
   fetchTMDB<PaginatedResponse<TVShow>>('/search/tv', {
     query,
+    page: String(page),
+  });
+
+export const discoverMovies = (
+  genreIds: number[],
+  page = 1
+): Promise<PaginatedResponse<Movie>> =>
+  fetchTMDB<PaginatedResponse<Movie>>('/discover/movie', {
+    with_genres: genreKey(genreIds),
+    sort_by: 'popularity.desc',
+    page: String(page),
+  });
+
+export const discoverTVShows = (
+  genreIds: number[],
+  page = 1
+): Promise<PaginatedResponse<TVShow>> =>
+  fetchTMDB<PaginatedResponse<TVShow>>('/discover/tv', {
+    with_genres: genreKey(genreIds),
+    sort_by: 'popularity.desc',
     page: String(page),
   });
 
