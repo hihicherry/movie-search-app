@@ -14,3 +14,6 @@ export const posterSrcSet = (posterPath: string) =>
 
 export const POSTER_SIZES =
   '(max-width: 767px) 45vw, (max-width: 1023px) 30vw, 22vw';
+
+export const logoUrl = (logoPath: string, size: 'w45' | 'w92' = 'w45') =>
+  `${TMDB_IMAGE_BASE}/${size}${logoPath}`;

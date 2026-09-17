@@ -5,6 +5,7 @@ import {
   Video,
   MediaType,
   PaginatedResponse,
+  WatchProvidersResponse,
 } from '../types/tmdb';
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -96,4 +97,14 @@ export const getCredits = (mediaType: MediaType, id: string): Promise<Cast[]> =>
 export const getVideos = (mediaType: MediaType, id: string): Promise<Video[]> =>
   fetchTMDB<{ results: Video[] }>(`/${mediaType}/${id}/videos`, {}, false).then(
     data => data.results
+  );
+
+export const getWatchProviders = (
+  mediaType: MediaType,
+  id: string
+): Promise<WatchProvidersResponse> =>
+  fetchTMDB<WatchProvidersResponse>(
+    `/${mediaType}/${id}/watch/providers`,
+    {},
+    false
   );

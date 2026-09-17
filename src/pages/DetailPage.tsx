@@ -4,11 +4,18 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useFavorites } from '../contexts/FavoritesContext';
 import { useMotionPreference } from '../hooks/useMotionPreference';
-import { getDetails, getCredits, getVideos } from '../services/tmdbApi';
+import {
+  getDetails,
+  getCredits,
+  getVideos,
+  getWatchProviders,
+} from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
 import { ERROR_MESSAGES } from '../utils/errors';
+import { genreDisplayName } from '../utils/genres';
 import { Movie, TVShow, Video, MediaType } from '../types/tmdb';
 import SkeletonDetail from '../components/SkeletonDetail';
+import WatchProviders from '../components/WatchProviders';
 
 //統一日期格式
 const formatDate = (dateString?: string): string => {
@@ -51,6 +58,13 @@ const DetailPage: React.FC = () => {
       );
       return trailer ? [trailer] : [];
     },
+  });
+
+  const providersQuery = useQuery({
+    queryKey: tmdbKeys.watchProviders(mediaType as MediaType, id ?? ''),
+    queryFn: () => getWatchProviders(mediaType as MediaType, id!),
+    enabled: canFetch,
+    select: data => data.results.TW ?? null,
   });
 
   const data = detailsQuery.data ?? null;
@@ -199,7 +213,7 @@ const DetailPage: React.FC = () => {
               🎬 類型：
             </span>{' '}
             {data.genres?.map(genre => (
-              <span key={genre.id}>{genre.name} </span>
+              <span key={genre.id}>{genreDisplayName(genre)} </span>
             ))}
           </p>
           <p>
@@ -240,6 +254,11 @@ const DetailPage: React.FC = () => {
           )}
         </div>
       </div>
+      <WatchProviders
+        isLoading={providersQuery.isLoading}
+        isError={providersQuery.isError}
+        region={providersQuery.data}
+      />
       <div className="flex gap-2 mt-2">
         <button
           className={`mt-2 font-pixel bg-fuchsia-200 text-gray-700 border-2 border-t-white border-l-white border-r-fuchsia-400 border-b-fuchsia-400 px-3 py-2 rounded-sm transition-all duration-300 hover:bg-fuchsia-300 hover:animate-flicker ${
