@@ -12,6 +12,8 @@ import {
   getPopularTVShows,
   discoverMovies,
   discoverTVShows,
+  searchMoviesInGenres,
+  searchTVShowsInGenres,
   TMDB_MAX_PAGE,
 } from '../services/tmdbApi';
 import { tmdbKeys } from '../query/keys';
@@ -129,15 +131,29 @@ function Home() {
     submittedQuery,
   ]);
 
-  const isDiscover = selectedGenreIds.length > 0;
-  const isSearch = !isDiscover && submittedQuery.length > 0;
+  const isGenreFilter = selectedGenreIds.length > 0;
+  const isSearch = submittedQuery.length > 0;
+  const isSearchInGenre = isGenreFilter && isSearch;
+  const isDiscover = isGenreFilter && !isSearch;
   const listQuery = useQuery<PaginatedResponse<Movie | TVShow>>({
-    queryKey: isDiscover
-      ? tmdbKeys.discover(mediaType, selectedGenreKey, page)
-      : isSearch
-        ? tmdbKeys.search(mediaType, submittedQuery, page)
-        : tmdbKeys.popular(mediaType, page),
+    queryKey: isSearchInGenre
+      ? tmdbKeys.searchInGenres(
+          mediaType,
+          submittedQuery,
+          selectedGenreKey,
+          page
+        )
+      : isDiscover
+        ? tmdbKeys.discover(mediaType, selectedGenreKey, page)
+        : isSearch
+          ? tmdbKeys.search(mediaType, submittedQuery, page)
+          : tmdbKeys.popular(mediaType, page),
     queryFn: () => {
+      if (isSearchInGenre) {
+        return mediaType === 'movie'
+          ? searchMoviesInGenres(submittedQuery, selectedGenreIds, page)
+          : searchTVShowsInGenres(submittedQuery, selectedGenreIds, page);
+      }
       if (isDiscover) {
         return mediaType === 'movie'
           ? discoverMovies(selectedGenreIds, page)
@@ -160,7 +176,7 @@ function Home() {
   const totalPages = Math.min(listQuery.data?.total_pages ?? 1, TMDB_MAX_PAGE);
   const loading = listQuery.isPending;
   const error = listQuery.isError
-    ? isSearch || isDiscover
+    ? isSearch || isDiscover || isSearchInGenre
       ? ERROR_MESSAGES.SEARCH_FAILED
       : ERROR_MESSAGES.FETCH_FAILED
     : null;
@@ -257,9 +273,14 @@ function Home() {
           </button>
         </div>
       </form>
+      {isSearchInGenre && (
+        <p className="font-pixel text-center text-sm text-gray-500 theme-blue:text-gray-300 px-4 -mt-6 mb-6">
+          目前在所選類型中搜尋
+        </p>
+      )}
       {isDiscover && (
         <p className="font-pixel text-center text-sm text-gray-500 theme-blue:text-gray-300 px-4 -mt-6 mb-6">
-          目前顯示該類型的熱門作品，標題搜尋未套用
+          目前顯示該類型的熱門作品
         </p>
       )}
       {error && (
