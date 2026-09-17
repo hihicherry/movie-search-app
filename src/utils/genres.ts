@@ -1,3 +1,5 @@
+import { MediaType } from '../types/tmdb';
+
 const GENRE_NAMES_ZH_TW: Record<number, string> = {
   28: '動作',
   12: '冒險',
@@ -28,6 +30,45 @@ const GENRE_NAMES_ZH_TW: Record<number, string> = {
   10768: '戰爭與政治',
 };
 
+export const MOVIE_GENRE_IDS = [
+  28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770,
+  53, 10752, 37,
+] as const;
+
+export const TV_GENRE_IDS = [
+  10759, 16, 35, 80, 99, 18, 10751, 10762, 9648, 10763, 10764, 10765, 10766,
+  10767, 10768, 37,
+] as const;
+
+export function genreIdsFor(mediaType: MediaType): readonly number[] {
+  return mediaType === 'movie' ? MOVIE_GENRE_IDS : TV_GENRE_IDS;
+}
+
+export function genreDisplayNameById(id: number): string | undefined {
+  return GENRE_NAMES_ZH_TW[id];
+}
+
 export function genreDisplayName(genre: { id: number; name: string }): string {
-  return GENRE_NAMES_ZH_TW[genre.id] ?? genre.name;
+  return genreDisplayNameById(genre.id) ?? genre.name;
+}
+
+export function genreKey(ids: number[]): string {
+  return [...ids].sort((a, b) => a - b).join(',');
+}
+
+export function parseGenreIds(
+  raw: string | null,
+  mediaType: MediaType
+): number[] {
+  if (!raw) return [];
+  const allowed = new Set(genreIdsFor(mediaType));
+  const seen = new Set<number>();
+  const ids: number[] = [];
+  for (const part of raw.split(',')) {
+    const id = Number(part);
+    if (!Number.isInteger(id) || !allowed.has(id) || seen.has(id)) continue;
+    seen.add(id);
+    ids.push(id);
+  }
+  return ids;
 }
