@@ -47,6 +47,63 @@ const fetchTMDB = async <T>(
 };
 
 export const TMDB_MAX_PAGE = 500;
+const LIST_PAGE_SIZE = 20;
+const MAX_GENRE_FILTER_SCAN_PAGES = 5;
+
+function itemMatchesGenres(
+  item: { genre_ids?: number[] },
+  genreIds: number[]
+): boolean {
+  const ids = item.genre_ids ?? [];
+  return genreIds.some(id => ids.includes(id));
+}
+
+async function searchAndFilterByGenre<T extends { genre_ids?: number[] }>(
+  searchFn: (query: string, page: number) => Promise<PaginatedResponse<T>>,
+  query: string,
+  genreIds: number[],
+  page: number
+): Promise<PaginatedResponse<T>> {
+  const matches: T[] = [];
+  let searchPage = 1;
+  let totalSearchPages = 1;
+  const needed = page * LIST_PAGE_SIZE;
+
+  while (
+    matches.length < needed &&
+    searchPage <= totalSearchPages &&
+    searchPage <= Math.min(TMDB_MAX_PAGE, MAX_GENRE_FILTER_SCAN_PAGES)
+  ) {
+    const data = await searchFn(query, searchPage);
+    totalSearchPages = data.total_pages;
+    matches.push(
+      ...data.results.filter(item => itemMatchesGenres(item, genreIds))
+    );
+    searchPage += 1;
+  }
+
+  const start = (page - 1) * LIST_PAGE_SIZE;
+  const results = matches.slice(start, start + LIST_PAGE_SIZE);
+  const scannedAll =
+    searchPage > totalSearchPages || searchPage > MAX_GENRE_FILTER_SCAN_PAGES;
+  const total_results = scannedAll
+    ? matches.length
+    : Math.max(
+        matches.length,
+        results.length === LIST_PAGE_SIZE ? needed + 1 : matches.length
+      );
+  const total_pages = Math.max(
+    1,
+    Math.min(TMDB_MAX_PAGE, Math.ceil(total_results / LIST_PAGE_SIZE) || 1)
+  );
+
+  return {
+    page,
+    results,
+    total_pages,
+    total_results,
+  };
+}
 
 //獲取近期受歡迎的電影
 export const getPopularMovies = (page = 1): Promise<PaginatedResponse<Movie>> =>
@@ -81,6 +138,20 @@ export const searchTVShows = (
     query,
     page: String(page),
   });
+
+export const searchMoviesInGenres = (
+  query: string,
+  genreIds: number[],
+  page = 1
+): Promise<PaginatedResponse<Movie>> =>
+  searchAndFilterByGenre(searchMovies, query, genreIds, page);
+
+export const searchTVShowsInGenres = (
+  query: string,
+  genreIds: number[],
+  page = 1
+): Promise<PaginatedResponse<TVShow>> =>
+  searchAndFilterByGenre(searchTVShows, query, genreIds, page);
 
 export const discoverMovies = (
   genreIds: number[],
