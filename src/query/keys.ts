@@ -11,4 +11,6 @@ export const tmdbKeys = {
     ['tmdb', 'credits', mediaType, id] as const,
   videos: (mediaType: MediaType, id: string) =>
     ['tmdb', 'videos', mediaType, id] as const,
+  watchProviders: (mediaType: MediaType, id: string) =>
+    ['tmdb', 'watchProviders', mediaType, id] as const,
 };
