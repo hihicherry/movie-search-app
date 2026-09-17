@@ -31,7 +31,7 @@ function MovieCard({ item, mediaType }: MovieCardProps) {
 
   return (
     <div
-      className="relative bg-theme-purple-card-gradient theme-blue:bg-theme-blue-card-gradient h-full flex flex-col shadow-md md:shadow-lg border-2 border-violet-300 theme-blue:border-sky-400 transition-colors duration-300 hover:animate-pulse"
+      className="relative bg-theme-purple-card-gradient theme-blue:bg-theme-blue-card-gradient h-full flex flex-col shadow-md md:shadow-lg border-2 border-violet-300 theme-blue:border-sky-400 transition-colors duration-300"
       style={{ backdropFilter: 'blur(10px)' }}
     >
       <div className="relative aspect-[2/3] w-full p-1.5 md:p-2">
